@@ -1,32 +1,53 @@
 body {
+    margin: 0;
+    background: radial-gradient(circle at top, #1a1a2e, #0f0f1a);
+    color: gold;
+    font-family: 'Segoe UI', sans-serif;
     text-align: center;
-    font-family: Arial;
-    background-color: #ffe6f0;
+}
+
+.container {
+    padding: 20px;
+}
+
+.title {
+    font-size: 32px;
+    text-shadow: 0 0 10px gold;
+}
+
+.stats {
+    margin: 15px;
+    font-size: 18px;
 }
 
 #game-area {
     width: 400px;
     height: 400px;
-    background: white;
     margin: 20px auto;
+    background: linear-gradient(145deg, #111, #1c1c2e);
+    border: 3px solid gold;
     position: relative;
-    border: 3px solid pink;
     overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 0 20px gold;
 }
 
-.enemy, .toxic {
-    width: 40px;
-    height: 40px;
+.item {
     position: absolute;
+    font-size: 28px;
     cursor: pointer;
-    font-size: 30px;
 }
 
 button {
-    padding: 10px 20px;
-    background: hotpink;
-    color: white;
+    padding: 12px 25px;
+    background: linear-gradient(45deg, gold, orange);
     border: none;
-    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+button:hover {
+    transform: scale(1.1);
 }

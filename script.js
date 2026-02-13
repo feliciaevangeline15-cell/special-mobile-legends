@@ -15,30 +15,29 @@ function startGame() {
     lives = 3;
     rank = 1;
     updateUI();
-    gameInterval = setInterval(spawnItem, 800);
+    gameInterval = setInterval(spawnItem, 700);
 }
 
 function spawnItem() {
     const item = document.createElement("div");
+    item.classList.add("item");
 
     const isToxic = Math.random() < 0.3;
 
     if (isToxic) {
-        item.innerHTML = "💀";
-        item.classList.add("toxic");
-        item.onclick = function () {
+        item.innerHTML = "💀"; // toxic player
+        item.onclick = () => {
             lives--;
             updateUI();
-            gameArea.removeChild(item);
+            item.remove();
             checkGame();
         };
     } else {
-        item.innerHTML = "⭐";
-        item.classList.add("enemy");
-        item.onclick = function () {
+        item.innerHTML = "💖"; // love star
+        item.onclick = () => {
             score += 10;
             updateUI();
-            gameArea.removeChild(item);
+            item.remove();
             checkGame();
         };
     }
@@ -49,9 +48,7 @@ function spawnItem() {
     gameArea.appendChild(item);
 
     setTimeout(() => {
-        if (gameArea.contains(item)) {
-            gameArea.removeChild(item);
-        }
+        if (item.parentNode) item.remove();
     }, 1500);
 }
 
@@ -73,7 +70,7 @@ function updateUI() {
 function checkGame() {
     if (lives <= 0) {
         clearInterval(gameInterval);
-        alert("Defeat! Try again 💔");
+        showDefeat();
     }
 
     if (score >= 80) {
@@ -84,8 +81,34 @@ function checkGame() {
 
 function showVictory() {
     document.body.innerHTML = `
-        <h1>🏆 MYTHIC ACHIEVED!</h1>
-        <h2>You unlocked my heart ❤️</h2>
-        <button onclick="alert('Happy Valentine 💕')">Accept Proposal</button>
+        <div style="
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            flex-direction:column;
+            background:radial-gradient(circle,#1a1a2e,#000);
+            color:gold;
+            font-family:Segoe UI;
+            text-align:center;
+        ">
+            <h1 style="font-size:40px; text-shadow:0 0 15px gold;">
+                🏆 MYTHIC ACHIEVED 🏆
+            </h1>
+            <h2 style="color:pink;">Happy Valentine 💕</h2>
+            <p>You have officially ranked up to my heart.</p>
+            <button onclick="this.innerText='Locked In 💖';">
+                Accept Proposal
+            </button>
+        </div>
+    `;
+}
+
+function showDefeat() {
+    document.body.innerHTML = `
+        <div style="text-align:center; padding-top:200px; background:#111; height:100vh; color:red;">
+            <h1>Defeat 💔</h1>
+            <p>You got defeated by Toxic Players.</p>
+        </div>
     `;
 }
