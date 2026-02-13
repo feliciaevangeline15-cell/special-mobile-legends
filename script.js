@@ -120,6 +120,8 @@ function startGame() {
         return;
     }
     
+    console.log(`Starting game with hero: ${gameState.selectedHero}`);
+    
     gameState.gameRunning = true;
     gameState.gameTime = 120;
     gameState.score = 0;
@@ -185,6 +187,7 @@ function endGame() {
 // ===== WAVE SPAWNING =====
 function spawnWave() {
     const waveSize = 2 + gameState.wave;
+    console.log(`Spawning wave ${gameState.wave} with ${waveSize} enemies`);
     
     for (let i = 0; i < waveSize; i++) {
         setTimeout(() => {
@@ -519,19 +522,26 @@ function selectHeroScreen() {
 
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Game initializing...');
     cacheDOM();
+    console.log('DOM cached');
     
     // Setup event listeners
     document.getElementById('playBtn').addEventListener('click', () => {
+        console.log('Play button clicked');
         switchScreen('heroSelect');
         playSound('click');
     });
     
     document.getElementById('musicToggle').addEventListener('click', toggleMusic);
-    dom.startBtn.addEventListener('click', startGame);
+    dom.startBtn.addEventListener('click', () => {
+        console.log('Start game clicked');
+        startGame();
+    });
     dom.pauseBtn.addEventListener('click', pauseGame);
     dom.ability1Btn.addEventListener('click', () => useAbility(1));
     dom.ability2Btn.addEventListener('click', () => useAbility(2));
     
     switchScreen('home');
+    console.log('Game ready!');
 });
