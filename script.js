@@ -71,7 +71,7 @@ const gameElements = {
     ability1Cd: document.getElementById('ability1-cd'),
     ability2Cd: document.getElementById('ability2-cd'),
     startBtn: document.getElementById('startGameBtn'),
-    pauseBtn: document.getElementById('pauseGameBtn')
+    pauseGameBtn: document.getElementById('pauseGameBtn')
 };
 
 // ===== EVENT LISTENERS =====

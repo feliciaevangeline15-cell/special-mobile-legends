@@ -104,20 +104,15 @@
 
             <!-- ABILITIES -->
             <div class="abilities-container">
-                <button id="ability1-btn" class="ability-btn ability-primary" title="ULTIMATE ABILITY">
-                    <div class="ability-icon">💥</div>
-                    <div class="ability-cooldown" id="ability1-cd"></div>
-                </button>
-                <button id="ability2-btn" class="ability-btn ability-secondary" title="SECONDARY ABILITY">
-                    <div class="ability-icon">⚡</div>
-                    <div class="ability-cooldown" id="ability2-cd"></div>
-                </button>
+                <button id="ability1-btn" class="ability-btn ability-primary" title="ULTIMATE ABILITY">💥<div class="ability-cooldown" id="ability1-cd"></div></button>
+                <button id="ability2-btn" class="ability-btn ability-secondary" title="SECONDARY ABILITY">⚡<div class="ability-cooldown" id="ability2-cd"></div></button>
             </div>
 
             <!-- CONTROL BUTTONS -->
             <div class="control-buttons">
                 <button id="startGameBtn" class="btn-control btn-play">▶ START</button>
                 <button id="pauseGameBtn" class="btn-control btn-pause hidden">⏸ PAUSE</button>
+                <button class="btn-control" onclick="goHome()" style="background: linear-gradient(45deg, #666, #555); border-color: #888; color: #fff;">← HOME</button>
             </div>
         </div>
     </div>
