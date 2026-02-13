@@ -19,7 +19,7 @@ const heroes = {
         name: "Pyromancer", 
         icon: "🔥", 
         damage: 30, 
-        speed: 800,
+        speed: 600,
         color: "#ff6b6b"
     },
     warrior: { 
@@ -33,7 +33,7 @@ const heroes = {
         name: "Shadow", 
         icon: "🗡️", 
         damage: 40, 
-        speed: 600,
+        speed: 800,
         color: "#6b9eff"
     }
 };
@@ -132,6 +132,10 @@ function startGame() {
     updateUI();
     
     const hero = heroes[gameState.selectedHero];
+    
+    // Spawn first item immediately
+    spawnEnemy();
+    
     const spawnInterval = setInterval(() => {
         if (gameState.gameRunning) spawnEnemy();
     }, hero.speed);
