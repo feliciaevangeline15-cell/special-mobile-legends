@@ -3,16 +3,19 @@ let gameState = {
     score: 0,
     hp: 100,
     maxHp: 100,
-    mana: 50,
+    mana: 100,
     maxMana: 100,
     level: 1,
     rank: 'WARRIOR',
-    gameTime: 60,
+    gameTime: 120,
     gameRunning: false,
     selectedHero: null,
     musicOn: true,
     spawnInterval: null,
-    timerInterval: null
+    timerInterval: null,
+    enemies: [],
+    wave: 1,
+    kills: 0
 };
 
 // ===== HERO DATA =====
@@ -21,30 +24,43 @@ const heroes = {
         name: "Pyromancer", 
         icon: "🔥", 
         damage: 30, 
-        speed: 600
+        speed: 600,
+        baseAttackSpeed: 1.2
     },
     warrior: { 
         name: "Berserker", 
         icon: "⚔️", 
-        damage: 20, 
-        speed: 700
+        damage: 25, 
+        speed: 700,
+        baseAttackSpeed: 0.8
     },
     assassin: { 
         name: "Shadow", 
         icon: "🗡️", 
         damage: 40, 
-        speed: 800
+        speed: 800,
+        baseAttackSpeed: 1.5
     }
 };
 
-// ===== ITEM TYPES =====
-const itemTypes = {
-    heal: { icon: "💚", points: -10, type: "heal" },
-    love: { icon: "💖", points: 15, type: "love" },
-    star: { icon: "⭐", points: 25, type: "star" },
-    gem: { icon: "💎", points: 40, type: "gem" },
-    bomb: { icon: "💣", points: -30, type: "bomb" }
-};
+// ===== ENEMY DATA =====
+class Enemy {
+    constructor(wave) {
+        this.id = Math.random();
+        this.hp = 30 + (wave * 10);
+        this.maxHp = this.hp;
+        this.damage = 10 + (wave * 3);
+        this.speed = 100 + (wave * 20);
+        this.x = Math.random() * (dom.gameArea.offsetWidth - 60);
+        this.y = Math.random() * (dom.gameArea.offsetHeight - 60);
+        this.element = null;
+    }
+    
+    takeDamage(amount) {
+        this.hp -= amount;
+        return this.hp <= 0;
+    }
+}
 
 // ===== DOM CACHE =====
 let dom = {};
@@ -105,30 +121,30 @@ function startGame() {
     }
     
     gameState.gameRunning = true;
-    gameState.gameTime = 60;
+    gameState.gameTime = 120;
     gameState.score = 0;
     gameState.hp = gameState.maxHp;
-    gameState.mana = 50;
+    gameState.mana = gameState.maxMana;
     gameState.level = 1;
     gameState.rank = 'WARRIOR';
+    gameState.wave = 1;
+    gameState.kills = 0;
+    gameState.enemies = [];
     
     dom.gameArea.innerHTML = '';
     dom.startBtn.classList.add('hidden');
     dom.pauseBtn.classList.remove('hidden');
     
     updateUI();
+    spawnWave();
     
-    // Spawn first item immediately
-    spawnItem();
-    
-    const hero = heroes[gameState.selectedHero];
-    
-    // Spawn items at interval
+    // Spawn new wave every 15 seconds
     gameState.spawnInterval = setInterval(() => {
         if (gameState.gameRunning) {
-            spawnItem();
+            gameState.wave++;
+            spawnWave();
         }
-    }, hero.speed);
+    }, 15000);
     
     // Timer countdown
     gameState.timerInterval = setInterval(() => {
@@ -141,6 +157,15 @@ function startGame() {
             }
         }
     }, 1000);
+    
+    // Enemy update loop
+    const updateLoop = setInterval(() => {
+        if (gameState.gameRunning) {
+            updateEnemies();
+        } else {
+            clearInterval(updateLoop);
+        }
+    }, 100);
 }
 
 function pauseGame() {
@@ -157,77 +182,171 @@ function endGame() {
     showResults();
 }
 
-// ===== ITEM SPAWNING =====
-function spawnItem() {
-    if (!dom.gameArea) return;
+// ===== WAVE SPAWNING =====
+function spawnWave() {
+    const waveSize = 2 + gameState.wave;
     
-    // Limit max items on screen
-    if (dom.gameArea.children.length > 20) return;
-    
-    const itemKeys = Object.keys(itemTypes);
-    const randomType = itemKeys[Math.floor(Math.random() * itemKeys.length)];
-    const itemData = itemTypes[randomType];
-    
-    const item = document.createElement('div');
-    item.classList.add('item');
-    item.textContent = itemData.icon;
-    item.style.left = Math.random() * (dom.gameArea.offsetWidth - 50) + 'px';
-    item.style.top = Math.random() * (dom.gameArea.offsetHeight - 50) + 'px';
-    
-    item.addEventListener('click', (e) => {
-        e.stopPropagation();
-        handleItemClick(item, itemData);
-    });
-    
-    dom.gameArea.appendChild(item);
-    
-    // Remove item after 3 seconds
-    setTimeout(() => {
-        if (item.parentNode) item.remove();
-    }, 3000);
+    for (let i = 0; i < waveSize; i++) {
+        setTimeout(() => {
+            if (gameState.gameRunning) {
+                const enemy = new Enemy(gameState.wave);
+                gameState.enemies.push(enemy);
+                renderEnemy(enemy);
+            }
+        }, i * 300);
+    }
 }
 
-function handleItemClick(item, itemData) {
-    playSound('hit');
+function renderEnemy(enemy) {
+    const element = document.createElement('div');
+    element.className = 'enemy';
+    element.textContent = '👹';
+    element.style.left = enemy.x + 'px';
+    element.style.top = enemy.y + 'px';
     
-    // Handle different item types
-    if (itemData.type === 'heal') {
-        gameState.hp = Math.min(gameState.hp - itemData.points, gameState.maxHp);
-    } else if (itemData.type === 'bomb') {
-        gameState.hp = Math.max(0, gameState.hp + itemData.points);
-    } else {
-        gameState.score += itemData.points;
-        gameState.mana = Math.min(gameState.mana + 5, gameState.maxMana);
+    // Health bar
+    const healthBar = document.createElement('div');
+    healthBar.className = 'enemy-hp';
+    healthBar.style.width = '100%';
+    healthBar.style.height = '2px';
+    healthBar.style.background = '#4CAF50';
+    healthBar.style.position = 'absolute';
+    healthBar.style.top = '-8px';
+    healthBar.style.borderRadius = '1px';
+    
+    element.appendChild(healthBar);
+    element.addEventListener('click', (e) => {
+        e.stopPropagation();
+        attackEnemy(enemy);
+    });
+    
+    dom.gameArea.appendChild(element);
+    enemy.element = element;
+}
+
+function updateEnemies() {
+    gameState.enemies = gameState.enemies.filter(enemy => {
+        if (enemy.element && enemy.element.parentNode) {
+            // Update position
+            enemy.x += (Math.random() - 0.5) * 4;
+            enemy.y += (Math.random() - 0.5) * 4;
+            
+            // Boundaries
+            enemy.x = Math.max(0, Math.min(enemy.x, dom.gameArea.offsetWidth - 60));
+            enemy.y = Math.max(0, Math.min(enemy.y, dom.gameArea.offsetHeight - 60));
+            
+            enemy.element.style.left = enemy.x + 'px';
+            enemy.element.style.top = enemy.y + 'px';
+            
+            // Update health bar
+            const hpPercent = (enemy.hp / enemy.maxHp) * 100;
+            enemy.element.querySelector('.enemy-hp').style.width = hpPercent + '%';
+            
+            return true;
+        }
+        return false;
+    });
+}
+
+function attackEnemy(enemy) {
+    const hero = heroes[gameState.selectedHero];
+    let damage = hero.damage;
+    
+    // Mana cost: 20 per attack
+    if (gameState.mana < 20) {
+        showAlert('💫 Low Mana', 'Need 20 mana to attack!');
+        return;
     }
     
-    item.classList.add('damage');
-    setTimeout(() => item.remove(), 500);
+    gameState.mana -= 20;
+    
+    if (enemy.takeDamage(damage)) {
+        // Enemy died
+        gameState.score += 50 * gameState.wave;
+        gameState.kills++;
+        gameState.mana = Math.min(gameState.mana + 10, gameState.maxMana);
+        
+        enemy.element.textContent = '💥';
+        enemy.element.style.opacity = '0.5';
+        
+        playSound('hit');
+        
+        setTimeout(() => {
+            if (enemy.element && enemy.element.parentNode) {
+                enemy.element.remove();
+            }
+        }, 300);
+    } else {
+        // Enemy took damage
+        playSound('click');
+        
+        // Enemy deals damage back
+        gameState.hp -= Math.floor(enemy.damage / 2);
+        
+        if (gameState.hp <= 0) {
+            gameState.hp = 0;
+            endGame();
+            return;
+        }
+    }
     
     updateUI();
-    
-    if (gameState.hp <= 0) {
-        endGame();
-    }
 }
 
 // ===== ABILITIES =====
 function useAbility(abilityNum) {
     if (!gameState.gameRunning) return;
     
-    if (gameState.mana < 30) {
-        showAlert('💫 Low Mana', 'Need 30 mana to use ability!');
+    if (gameState.mana < 50) {
+        showAlert('💫 Low Mana', 'Need 50 mana for ability!');
         return;
     }
     
+    const hero = heroes[gameState.selectedHero];
+    gameState.mana -= 50;
+    
+    if (abilityNum === 1) {
+        // AOE ability - damage all enemies
+        const damage = hero.damage * 2;
+        gameState.enemies = gameState.enemies.filter(enemy => {
+            if (!enemy.takeDamage(damage)) return true;
+            
+            // Enemy died
+            gameState.score += 100 * gameState.wave;
+            gameState.kills++;
+            enemy.element.textContent = '💥';
+            setTimeout(() => {
+                if (enemy.element && enemy.element.parentNode) {
+                    enemy.element.remove();
+                }
+            }, 300);
+            return false;
+        });
+    } else {
+        // Single target ability - damage strongest enemy
+        if (gameState.enemies.length > 0) {
+            const strongest = gameState.enemies.reduce((a, b) => a.hp > b.hp ? a : b);
+            if (strongest.takeDamage(hero.damage * 3)) {
+                gameState.score += 150 * gameState.wave;
+                gameState.kills++;
+                strongest.element.textContent = '💥';
+                setTimeout(() => {
+                    if (strongest.element && strongest.element.parentNode) {
+                        strongest.element.remove();
+                    }
+                }, 300);
+                gameState.enemies = gameState.enemies.filter(e => e !== strongest);
+            }
+        }
+    }
+    
     playSound('levelup');
-    gameState.mana -= 30;
-    gameState.score += heroes[gameState.selectedHero].damage * 2;
     
     const btn = abilityNum === 1 ? dom.ability1Btn : dom.ability2Btn;
     const cdDisplay = abilityNum === 1 ? dom.ability1Cd : dom.ability2Cd;
     
     btn.disabled = true;
-    let cooldown = 8;
+    let cooldown = 6;
     cdDisplay.textContent = cooldown;
     
     const cdInterval = setInterval(() => {
@@ -246,41 +365,32 @@ function useAbility(abilityNum) {
 
 // ===== UI UPDATES =====
 function updateUI() {
-    if (!dom.score) return; // Safety check
+    if (!dom.score) return;
     
     dom.score.textContent = gameState.score;
     dom.hp.textContent = Math.max(0, gameState.hp);
     dom.mana.textContent = gameState.mana;
-    dom.heroLevelMini.textContent = `Lv ${gameState.level}`;
-    dom.rankDisplay.textContent = gameState.rank;
+    dom.heroLevelMini.textContent = `Wave ${gameState.wave} | Kills: ${gameState.kills}`;
+    dom.rankDisplay.textContent = `${gameState.rank} Lv${gameState.level}`;
     
-    // Update HP bar
     const hpPercent = (gameState.hp / gameState.maxHp) * 100;
     dom.hpFill.style.width = hpPercent + '%';
     
-    // Check level up
-    if (gameState.score >= 150 && gameState.level === 1) {
+    // Rank progression
+    if (gameState.score >= 500 && gameState.level === 1) {
         gameState.level = 2;
-        showAlert('⬆️ LEVEL UP!', 'You reached Level 2!');
-    }
-    if (gameState.score >= 350 && gameState.level === 2) {
-        gameState.level = 3;
-        showAlert('⬆️ LEVEL UP!', 'You reached Level 3!');
-    }
-    if (gameState.score >= 600 && gameState.level === 3) {
-        gameState.level = 4;
-        showAlert('⬆️ MYTHIC RANK!', 'You are now MYTHIC!');
-    }
-    
-    // Check rank up
-    if (gameState.score >= 100 && gameState.rank === 'WARRIOR') {
         gameState.rank = 'EPIC';
+        showAlert('⬆️ RANKED UP!', 'Now EPIC Lv2!');
     }
-    if (gameState.score >= 300 && gameState.rank === 'EPIC') {
+    if (gameState.score >= 1500 && gameState.level === 2) {
+        gameState.level = 3;
         gameState.rank = 'MYTHIC';
+        showAlert('⬆️ RANKED UP!', 'Now MYTHIC Lv3!');
     }
-    if (gameState.score >= 600 && gameState.rank === 'MYTHIC') {
+    if (gameState.score >= 3000 && gameState.level === 3) {
+        gameState.level = 4;
         gameState.rank = 'LEGEND';
+        showAlert('⬆️ RANKED UP!', 'Now LEGEND Lv4!');
     }
 }
 
@@ -288,7 +398,7 @@ function updateTimer() {
     if (!dom.timer) return;
     dom.timer.textContent = gameState.gameTime;
     
-    if (gameState.gameTime <= 10) {
+    if (gameState.gameTime <= 20) {
         dom.timer.style.color = '#ff6b6b';
         dom.timer.style.textShadow = '0 0 10px #ff6b6b';
     }
@@ -297,19 +407,19 @@ function updateTimer() {
 // ===== RESULTS =====
 function showResults() {
     const hero = heroes[gameState.selectedHero];
-    const isVictory = gameState.score >= 300;
+    const isVictory = gameState.score >= 500;
     
     document.getElementById('result-title').textContent = isVictory ? '🏆 VICTORY! 🏆' : '💔 DEFEAT 💔';
     document.getElementById('result-title').style.color = isVictory ? '#ffd700' : '#ff6b6b';
     document.getElementById('final-score').textContent = gameState.score;
     document.getElementById('final-rank').textContent = gameState.rank;
-    document.getElementById('final-hero').textContent = hero.name;
+    document.getElementById('final-hero').textContent = `${hero.name} (Wave: ${gameState.wave}, Kills: ${gameState.kills})`;
     
     let message = '';
     if (isVictory) {
-        message = `You conquered the battlefield as ${hero.name}!\nYour love for the game is unstoppable! 💕`;
+        message = `Excellent performance as ${hero.name}!\nYou defeated ${gameState.kills} enemies across ${gameState.wave} waves!\nYour legendary power is unstoppable! 💕`;
     } else {
-        message = `Better luck next time!\nEvery warrior has their battles.`;
+        message = `You were defeated at Wave ${gameState.wave} with ${gameState.kills} kills.\nEvery warrior falls, but legends rise again!`;
     }
     document.getElementById('result-message').textContent = message;
     
