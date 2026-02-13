@@ -92,7 +92,7 @@ function selectHero(heroType) {
 // ===== GAME START =====
 function startGame() {
     if (!gameState.selectedHero) {
-        showAlert('⚠️ Select Hero', 'Please choose a hero first!');
+        showAlert('No Hero', 'Please choose a hero first!');
         return;
     }
     
@@ -136,7 +136,7 @@ function startGame() {
 
 function pauseGame() {
     gameState.gameRunning = !gameState.gameRunning;
-    dom.pauseBtn.textContent = gameState.gameRunning ? '⏸ PAUSE' : '▶ RESUME';
+    dom.pauseBtn.textContent = gameState.gameRunning ? 'PAUSE' : 'RESUME';
 }
 
 function endGame() {
@@ -155,11 +155,22 @@ function renderBattle() {
     const enemyHpPercent = (gameState.enemyHp / gameState.enemyMaxHp) * 100;
     
     const battleHTML = `
+        <style>
+            @keyframes attackLeft { 0% { transform: translateX(0); } 50% { transform: translateX(30px); } 100% { transform: translateX(0); } }
+            @keyframes attackRight { 0% { transform: translateX(0); } 50% { transform: translateX(-30px); } 100% { transform: translateX(0); } }
+            @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+            @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+            
+            .player-avatar { animation: ${gameState.playerAttacking ? 'attackLeft 0.4s' : 'none'}; }
+            .enemy-avatar { animation: ${gameState.enemyAttacking ? 'attackRight 0.4s' : 'none'}; }
+            .hit-text { animation: bounce 0.5s ease-in; font-weight: bold; }
+        </style>
+        
         <div style="display: flex; flex-direction: column; height: 100%; padding: 20px; gap: 15px; justify-content: space-between;">
             
             <!-- BATTLE TITLE -->
             <div style="text-align: center; font-size: 24px; font-weight: bold; color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);">
-                ⚔️ ARENA BATTLE ⚔️
+                ARENA BATTLE
             </div>
             
             <!-- HERO vs ENEMY -->
@@ -167,7 +178,7 @@ function renderBattle() {
                 
                 <!-- PLAYER HERO -->
                 <div style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 215, 0, 0.05)); border: 2px solid #ffd700; border-radius: 15px; padding: 25px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 15px;">
-                    <div style="font-size: 120px; line-height: 1; filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));">
+                    <div class="player-avatar" style="font-size: 120px; line-height: 1; filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5)); transition: transform 0.4s;">
                         ${hero.icon}
                     </div>
                     <div>
@@ -184,14 +195,14 @@ function renderBattle() {
                         <div style="width: ${playerHpPercent}%; height: 20px; background: linear-gradient(90deg, #ff6b6b, #ff8e8e); border-radius: 6px; transition: width 0.3s ease;"></div>
                     </div>
                     <div style="font-size: 14px; font-weight: bold; color: #ff6b6b;">
-                        ❤️ ${Math.max(0, gameState.playerHp)} / ${gameState.playerMaxHp}
+                        ${Math.max(0, gameState.playerHp)} / ${gameState.playerMaxHp}
                     </div>
                 </div>
                 
                 <!-- ENEMY HERO -->
                 <div style="background: linear-gradient(135deg, rgba(255, 107, 107, 0.15), rgba(255, 107, 107, 0.05)); border: 2px solid #ff6b6b; border-radius: 15px; padding: 25px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 15px;">
-                    <div style="font-size: 120px; line-height: 1; filter: drop-shadow(0 0 5px rgba(255, 107, 107, 0.5)); transform: scaleX(-1);">
-                        👤
+                    <div class="enemy-avatar" style="font-size: 120px; line-height: 1; filter: drop-shadow(0 0 5px rgba(255, 107, 107, 0.5)); transform: scaleX(-1); transition: transform 0.4s;">
+                        
                     </div>
                     <div>
                         <div style="font-size: 22px; font-weight: bold; color: #ff6b6b;">
@@ -207,23 +218,23 @@ function renderBattle() {
                         <div style="width: ${enemyHpPercent}%; height: 20px; background: linear-gradient(90deg, #6B9EFF, #9EBFFF); border-radius: 6px; transition: width 0.3s ease;"></div>
                     </div>
                     <div style="font-size: 14px; font-weight: bold; color: #6B9EFF;">
-                        ❤️ ${Math.max(0, gameState.enemyHp)} / ${gameState.enemyMaxHp}
+                        ${Math.max(0, gameState.enemyHp)} / ${gameState.enemyMaxHp}
                     </div>
                 </div>
             </div>
             
             <!-- BATTLE LOG -->
             <div id="battle-log" style="background: rgba(0, 0, 0, 0.7); border: 1px solid #444; border-radius: 10px; padding: 12px; max-height: 70px; overflow-y: auto; font-size: 12px; color: #aaa; line-height: 1.4;">
-                ${gameState.battleLog.slice(-3).map(log => `<div style="color: #ffd700;">• ${log}</div>`).join('')}
+                ${gameState.battleLog.slice(-3).map(log => `<div style="color: #ffd700;">* ${log}</div>`).join('')}
             </div>
             
             <!-- ACTION BUTTONS -->
             <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
                 <button id="attack-btn" style="padding: 18px 70px; background: linear-gradient(135deg, #ff3333, #ff6b6b); color: white; border: 3px solid #ff0000; border-radius: 12px; font-weight: bold; font-size: 18px; cursor: pointer; box-shadow: 0 5px 20px rgba(255, 51, 51, 0.4); transition: all 0.2s; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">
-                    💥 ATTACK
+                    ATTACK
                 </button>
                 <button id="defend-btn" style="padding: 18px 55px; background: linear-gradient(135deg, #4a90e2, #357abd); color: white; border: 3px solid #2563be; border-radius: 12px; font-weight: bold; font-size: 16px; cursor: pointer; box-shadow: 0 5px 20px rgba(74, 144, 226, 0.4); transition: all 0.2s; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">
-                    🛡️ DEFEND
+                    DEFEND
                 </button>
             </div>
         </div>
@@ -232,14 +243,15 @@ function renderBattle() {
     dom.gameArea.innerHTML = battleHTML;
     
     // Attach button listeners
-    document.getElementById('attack-btn').addEventListener('click', playerAttack);
-    document.getElementById('defend-btn').addEventListener('click', playerDefend);
-    
-    // Add hover effects
     const attackBtn = document.getElementById('attack-btn');
     const defendBtn = document.getElementById('defend-btn');
     
+    if (attackBtn) attackBtn.addEventListener('click', playerAttack);
+    if (defendBtn) defendBtn.addEventListener('click', playerDefend);
+    
+    // Hover effects
     [attackBtn, defendBtn].forEach(btn => {
+        if (!btn) return;
         btn.addEventListener('mouseover', (e) => {
             if (gameState.gameRunning) {
                 e.target.style.transform = 'scale(1.08)';
@@ -262,28 +274,27 @@ function playerAttack() {
     const hero = heroes[gameState.selectedHero];
     let damage = hero.damage;
     
-    // Check mana
     if (gameState.playerMana < 25) {
-        showAlert('�� Low Mana!', 'Need 25 mana to attack. Regen faster by defending!');
+        showAlert('Low Mana!', 'Need 25 mana to attack. Regen by defending!');
         return;
     }
     
     gameState.playerMana -= 25;
     gameState.playerAttacking = true;
     
-    // Crit chance 30%
     let isCrit = Math.random() < 0.3;
     if (isCrit) {
         damage *= 1.5;
-        addLog(`⚡ CRITICAL HIT! ${Math.floor(damage)} damage!`);
+        addLog('CRITICAL HIT! ' + Math.floor(damage) + ' damage!');
     } else {
-        addLog(`🎯 Hit for ${Math.floor(damage)} damage!`);
+        addLog('Hit for ' + Math.floor(damage) + ' damage!');
     }
     
     gameState.enemyHp -= damage;
     gameState.score += 10;
     
-    playSound('hit');
+    playSound('attack');
+    screenShake();
     
     setTimeout(() => {
         gameState.playerAttacking = false;
@@ -291,9 +302,8 @@ function playerAttack() {
         if (gameState.enemyHp <= 0) {
             gameState.kills++;
             gameState.score += 200;
-            addLog('🏆 ENEMY DEFEATED!');
+            addLog('ENEMY DEFEATED!');
             
-            // Reset for next round
             setTimeout(() => {
                 gameState.playerHp = gameState.playerMaxHp;
                 gameState.playerMana = gameState.playerMaxMana;
@@ -304,7 +314,7 @@ function playerAttack() {
             updateUI();
             renderBattle();
         }
-    }, 350);
+    }, 400);
 }
 
 function playerDefend() {
@@ -312,15 +322,15 @@ function playerDefend() {
     
     gameState.playerAttacking = true;
     gameState.playerMana = Math.min(gameState.playerMana + 30, gameState.playerMaxMana);
-    addLog('🛡️ Defending... Mana +30!');
+    addLog('Defending... Mana +30!');
     
-    playSound('shield');
+    playSound('defend');
     
     setTimeout(() => {
         gameState.playerAttacking = false;
         updateUI();
         renderBattle();
-    }, 350);
+    }, 400);
 }
 
 function enemyAI() {
@@ -328,33 +338,33 @@ function enemyAI() {
     
     gameState.enemyAttacking = true;
     
-    // Simple AI logic - attack if healthy
     if (gameState.enemyHp > gameState.enemyMaxHp * 0.4) {
         let damage = 30;
         
         if (Math.random() < 0.3) {
             damage *= 1.5;
-            addLog(`Enemy ⚡ CRIT! ${Math.floor(damage)} damage!`);
+            addLog('Enemy CRITICAL! ' + Math.floor(damage) + ' damage!');
         } else {
-            addLog(`Enemy 🎯 attacks! ${Math.floor(damage)} damage!`);
+            addLog('Enemy attacks! ' + Math.floor(damage) + ' damage!');
         }
         
         gameState.playerHp -= damage;
-        playSound('hit');
+        playSound('attack');
+        screenShake();
         
         if (gameState.playerHp <= 0) {
-            addLog('💀 YOU WERE DEFEATED!');
-            endGame();
+            addLog('YOU WERE DEFEATED!');
+            setTimeout(() => endGame(), 500);
         }
     } else {
-        addLog('Enemy 🛡️ defending...');
+        addLog('Enemy defending...');
     }
     
     setTimeout(() => {
         gameState.enemyAttacking = false;
         updateUI();
         renderBattle();
-    }, 350);
+    }, 400);
 }
 
 function addLog(msg) {
@@ -364,12 +374,21 @@ function addLog(msg) {
     }
 }
 
+function screenShake() {
+    const gameArea = document.getElementById('game-area');
+    if (!gameArea) return;
+    gameArea.style.animation = 'none';
+    setTimeout(() => {
+        gameArea.style.animation = 'shake 0.3s';
+    }, 10);
+}
+
 // ===== UI UPDATES =====
 function updateUI() {
     dom.playerHp.textContent = Math.max(0, gameState.playerHp);
     dom.playerMana.textContent = gameState.playerMana;
     dom.score.textContent = gameState.score;
-    dom.heroLevelMini.textContent = `Kills: ${gameState.kills}`;
+    dom.heroLevelMini.textContent = 'Kills: ' + gameState.kills;
     
     const hpPercent = (gameState.playerHp / gameState.playerMaxHp) * 100;
     dom.playerHpFill.style.width = hpPercent + '%';
@@ -378,7 +397,7 @@ function updateUI() {
 function updateTimer() {
     const mins = Math.floor(gameState.gameTime / 60);
     const secs = gameState.gameTime % 60;
-    dom.timer.textContent = `${mins}:${String(secs).padStart(2, '0')}`;
+    dom.timer.textContent = mins + ':' + String(secs).padStart(2, '0');
     
     if (gameState.gameTime <= 60) {
         dom.timer.style.color = '#ff6b6b';
@@ -392,17 +411,17 @@ function showResults() {
     const hero = heroes[gameState.selectedHero];
     const isVictory = gameState.kills >= 5;
     
-    document.getElementById('result-title').textContent = isVictory ? '🏆 VICTORY! 🏆' : '⚔️ BATTLE END ⚔️';
+    document.getElementById('result-title').textContent = isVictory ? 'VICTORY!' : 'BATTLE END';
     document.getElementById('result-title').style.color = isVictory ? '#ffd700' : '#bbb';
     document.getElementById('final-score').textContent = gameState.score;
-    document.getElementById('final-rank').textContent = `${gameState.kills} Kills`;
+    document.getElementById('final-rank').textContent = gameState.kills + ' Kills';
     document.getElementById('final-hero').textContent = hero.name;
     
     let message = '';
     if (isVictory) {
-        message = `�� Legendary victory!\n${gameState.kills} enemies defeated!\n${hero.name}'s power is unstoppable! 💪`;
+        message = 'Legendary victory!\n' + gameState.kills + ' enemies defeated!\n' + hero.name + ' power is unstoppable!';
     } else {
-        message = `Battle ended with ${gameState.kills} kills.\nKeep training and come back stronger! 💪`;
+        message = 'Battle ended with ' + gameState.kills + ' kills.\nKeep training and come back stronger!';
     }
     document.getElementById('result-message').textContent = message;
     
@@ -437,28 +456,28 @@ function playSound(type) {
         
         const now = ctx.currentTime;
         
-        if (type === 'hit') {
-            osc.frequency.value = 600;
-            gain.gain.setValueAtTime(0.15, now);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
-            osc.start(now);
-            osc.stop(now + 0.15);
-        } else if (type === 'shield') {
-            osc.frequency.value = 800;
-            gain.gain.setValueAtTime(0.1, now);
+        if (type === 'attack') {
+            osc.frequency.value = 700;
+            gain.gain.setValueAtTime(0.2, now);
             gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
             osc.start(now);
             osc.stop(now + 0.2);
+        } else if (type === 'defend') {
+            osc.frequency.value = 800;
+            gain.gain.setValueAtTime(0.15, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+            osc.start(now);
+            osc.stop(now + 0.25);
         }
     } catch (e) {
-        // Ignore
+        // Audio error
     }
 }
 
 function toggleMusic() {
     gameState.musicOn = !gameState.musicOn;
     const btn = document.getElementById('musicToggle');
-    btn.textContent = gameState.musicOn ? '🔊 MUSIC ON' : '�� MUSIC OFF';
+    btn.textContent = gameState.musicOn ? 'MUSIC ON' : 'MUSIC OFF';
 }
 
 // ===== MODAL ALERTS =====
@@ -498,5 +517,4 @@ document.addEventListener('DOMContentLoaded', () => {
     dom.pauseBtn.addEventListener('click', pauseGame);
     
     switchScreen('home');
-    console.log('Game ready!');
 });
