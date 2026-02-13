@@ -6,18 +6,77 @@
 </head>
 <body>
 
-<div class="container">
-    <h1 class="title">⚔️ Special Mobile Legends ⚔️</h1>
-    <h2 id="rank">Rank: Warrior</h2>
-
-    <div class="stats">
-        <div>⭐ Love Stars: <span id="score">0</span></div>
-        <div>❤️ Lives: <span id="lives">3</span></div>
+<div id="hero-select" class="hero-select-screen">
+    <h1>SELECT YOUR HERO</h1>
+    <div class="heroes-grid">
+        <div class="hero-card" data-hero="mage" onclick="selectHero('mage')">
+            <div class="hero-icon">🔥</div>
+            <h3>Pyromancer</h3>
+            <p>Mage - High Damage</p>
+        </div>
+        <div class="hero-card" data-hero="warrior" onclick="selectHero('warrior')">
+            <div class="hero-icon">⚔️</div>
+            <h3>Berserker</h3>
+            <p>Warrior - Balanced</p>
+        </div>
+        <div class="hero-card" data-hero="assassin" onclick="selectHero('assassin')">
+            <div class="hero-icon">🗡️</div>
+            <h3>Shadow</h3>
+            <p>Assassin - High Speed</p>
+        </div>
     </div>
+</div>
 
-    <div id="game-area"></div>
+<div id="game-container" class="hidden">
+    <div class="container">
+        <div class="top-bar">
+            <div class="left-info">
+                <h1 class="title">⚔️ Special Mobile Legends ⚔️</h1>
+                <h2 id="rank" class="rank-display">Rank: Warrior</h2>
+            </div>
+            <div class="timer-section">
+                <div id="timer" class="timer">60s</div>
+            </div>
+        </div>
 
-    <button id="startBtn">Start Match</button>
+        <div class="game-main">
+            <div class="left-panel">
+                <div class="hero-info">
+                    <h3>HERO</h3>
+                    <div id="hero-name" class="hero-name">Select Hero</div>
+                    <div id="hero-level" class="level">Level 1</div>
+                </div>
+                <div class="stats-panel">
+                    <div class="stat">⭐ Stars: <span id="score">0</span></div>
+                    <div class="stat">❤️ HP: <span id="lives">100</span>/100</div>
+                    <div class="stat">⚡ Mana: <span id="mana">50</span>/100</div>
+                </div>
+            </div>
+
+            <div id="game-area" class="game-area"></div>
+
+            <div class="right-panel">
+                <div class="abilities">
+                    <h3>ABILITIES</h3>
+                    <button id="abilityBtn" class="ability-btn" title="Click to activate ability (10s cooldown)">ACTIVATE ABILITY</button>
+                    <div id="cooldown" class="cooldown-display">Ready</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button id="startBtn" class="start-btn">START MATCH</button>
+            <button id="pauseBtn" class="pause-btn hidden">PAUSE</button>
+        </div>
+    </div>
+</div>
+
+<div id="custom-modal" class="modal hidden">
+    <div class="modal-content">
+        <h2 id="modal-title">Modal Title</h2>
+        <p id="modal-message">Modal message</p>
+        <button id="modal-btn" onclick="closeModal()">OK</button>
+    </div>
 </div>
 
 <script src="script.js"></script>
