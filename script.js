@@ -1,271 +1,391 @@
-// Game Variables
-let score = 0;
-let lives = 100;
-let maxLives = 100;
-let mana = 50;
-let maxMana = 100;
-let level = 1;
-let rank = 1;
-let gameInterval;
-let countdownInterval;
-let gameTime = 60;
-let gameRunning = false;
-let selectedHero = null;
-let abilityOnCooldown = false;
-let abilityDamage = 0;
-
-// Hero configurations
-const heroes = {
-    mage: { name: "Pyromancer", icon: "🔥", baseDamage: 30, speed: 800 },
-    warrior: { name: "Berserker", icon: "⚔️", baseDamage: 20, speed: 700 },
-    assassin: { name: "Shadow", icon: "🗡️", baseDamage: 40, speed: 600 }
+// ===== GAME STATE =====
+let gameState = {
+    score: 0,
+    hp: 100,
+    maxHp: 100,
+    mana: 50,
+    maxMana: 100,
+    level: 1,
+    rank: 'WARRIOR',
+    gameTime: 60,
+    gameRunning: false,
+    selectedHero: null,
+    musicOn: false
 };
 
-// DOM Elements
-const scoreText = document.getElementById("score");
-const livesText = document.getElementById("lives");
-const manaText = document.getElementById("mana");
-const rankText = document.getElementById("rank");
-const gameArea = document.getElementById("game-area");
-const startBtn = document.getElementById("startBtn");
-const pauseBtn = document.getElementById("pauseBtn");
-const timerDisplay = document.getElementById("timer");
-const abilityBtn = document.getElementById("abilityBtn");
-const cooldownDisplay = document.getElementById("cooldown");
-const heroNameDisplay = document.getElementById("hero-name");
-const heroLevelDisplay = document.getElementById("hero-level");
-const heroSelectScreen = document.getElementById("hero-select");
-const gameContainer = document.getElementById("game-container");
+// ===== HERO DATA =====
+const heroes = {
+    mage: { 
+        name: "Pyromancer", 
+        icon: "🔥", 
+        damage: 30, 
+        speed: 800,
+        color: "#ff6b6b"
+    },
+    warrior: { 
+        name: "Berserker", 
+        icon: "⚔️", 
+        damage: 20, 
+        speed: 700,
+        color: "#ffd700"
+    },
+    assassin: { 
+        name: "Shadow", 
+        icon: "🗡️", 
+        damage: 40, 
+        speed: 600,
+        color: "#6b9eff"
+    }
+};
 
-// Event Listeners
-startBtn.addEventListener("click", startGame);
-pauseBtn.addEventListener("click", pauseGame);
-abilityBtn.addEventListener("click", activateAbility);
+// ===== ITEM TYPES =====
+const itemTypes = {
+    heal: { icon: "💚", points: -10, type: "heal", color: "#4CAF50" },
+    love: { icon: "💖", points: 15, type: "love", color: "#ff6b6b" },
+    star: { icon: "⭐", points: 25, type: "star", color: "#ffd700" },
+    gem: { icon: "💎", points: 40, type: "gem", color: "#6b9eff" },
+    bomb: { icon: "💣", points: -30, type: "bomb", color: "#FF4444" }
+};
+
+// ===== DOM ELEMENTS =====
+const screens = {
+    home: document.getElementById('home-screen'),
+    heroSelect: document.getElementById('hero-select-screen'),
+    game: document.getElementById('game-screen'),
+    result: document.getElementById('result-screen')
+};
+
+const gameElements = {
+    gameArea: document.getElementById('game-area'),
+    score: document.getElementById('score'),
+    hp: document.getElementById('hp-current'),
+    hpFill: document.getElementById('hp-fill'),
+    mana: document.getElementById('mana'),
+    timer: document.getElementById('timer'),
+    rankDisplay: document.getElementById('rank-display'),
+    heroNameMini: document.getElementById('hero-name-mini'),
+    heroLevelMini: document.getElementById('hero-level-mini'),
+    heroAvatarMini: document.getElementById('hero-avatar-mini'),
+    ability1Btn: document.getElementById('ability1-btn'),
+    ability2Btn: document.getElementById('ability2-btn'),
+    ability1Cd: document.getElementById('ability1-cd'),
+    ability2Cd: document.getElementById('ability2-cd'),
+    startBtn: document.getElementById('startGameBtn'),
+    pauseBtn: document.getElementById('pauseGameBtn')
+};
+
+// ===== EVENT LISTENERS =====
+document.getElementById('playBtn').addEventListener('click', () => {
+    switchScreen('heroSelect');
+    playSound('click');
+});
+
+document.getElementById('musicToggle').addEventListener('click', toggleMusic);
+gameElements.startBtn.addEventListener('click', startGame);
+gameElements.pauseGameBtn.addEventListener('click', pauseGame);
+gameElements.ability1Btn.addEventListener('click', () => useAbility(1));
+gameElements.ability2Btn.addEventListener('click', () => useAbility(2));
+
+// ===== SCREEN MANAGEMENT =====
+function switchScreen(screenName) {
+    Object.values(screens).forEach(s => s.classList.remove('active'));
+    screens[screenName].classList.add('active');
+}
 
 function selectHero(heroType) {
-    selectedHero = heroType;
-    heroSelectScreen.classList.add("hidden");
-    gameContainer.classList.remove("hidden");
-    updateHeroDisplay();
+    gameState.selectedHero = heroType;
+    const hero = heroes[heroType];
+    
+    gameElements.heroNameMini.textContent = hero.name;
+    gameElements.heroAvatarMini.textContent = hero.icon;
+    
+    switchScreen('game');
+    playSound('click');
 }
 
-function updateHeroDisplay() {
-    if (selectedHero) {
-        const hero = heroes[selectedHero];
-        heroNameDisplay.innerText = hero.name;
-        abilityDamage = hero.baseDamage;
-    }
+function goHome() {
+    switchScreen('home');
+    resetGame();
 }
 
+function selectHeroScreen() {
+    switchScreen('heroSelect');
+    resetGame();
+}
+
+// ===== GAME MECHANICS =====
 function startGame() {
-    if (!selectedHero) {
-        showCustomAlert("Error", "Please select a hero first!");
-        return;
-    }
+    if (!gameState.selectedHero) return;
     
-    score = 0;
-    lives = maxLives;
-    mana = 50;
-    level = 1;
-    rank = 1;
-    gameTime = 60;
-    gameRunning = true;
-    abilityOnCooldown = false;
-    gameArea.innerHTML = "";
+    gameState.gameRunning = true;
+    gameState.gameTime = 60;
+    gameState.score = 0;
+    gameState.hp = gameState.maxHp;
+    gameState.mana = 50;
+    gameState.level = 1;
+    gameState.rank = 'WARRIOR';
     
-    startBtn.classList.add("hidden");
-    pauseBtn.classList.remove("hidden");
-    abilityBtn.disabled = false;
+    gameElements.gameArea.innerHTML = '';
+    gameElements.startBtn.classList.add('hidden');
+    gameElements.pauseGameBtn.classList.remove('hidden');
     
     updateUI();
     
-    const spawnSpeed = heroes[selectedHero].speed;
-    gameInterval = setInterval(spawnItem, spawnSpeed);
-    countdownInterval = setInterval(updateTimer, 1000);
+    const hero = heroes[gameState.selectedHero];
+    const spawnInterval = setInterval(() => {
+        if (gameState.gameRunning) spawnEnemy();
+    }, hero.speed);
+    
+    const timerInterval = setInterval(() => {
+        if (gameState.gameRunning) {
+            gameState.gameTime--;
+            updateTimer();
+            if (gameState.gameTime <= 0) {
+                clearInterval(spawnInterval);
+                clearInterval(timerInterval);
+                endGame();
+            }
+        }
+    }, 1000);
+    
+    gameState.spawnInterval = spawnInterval;
+    gameState.timerInterval = timerInterval;
 }
 
 function pauseGame() {
-    gameRunning = false;
-    clearInterval(gameInterval);
-    clearInterval(countdownInterval);
-    pauseBtn.classList.add("hidden");
-    startBtn.classList.remove("hidden");
-    startBtn.innerText = "RESUME MATCH";
+    gameState.gameRunning = !gameState.gameRunning;
+    gameElements.pauseGameBtn.textContent = gameState.gameRunning ? '⏸ PAUSE' : '▶ RESUME';
 }
 
-function spawnItem() {
-    if (!gameRunning) return;
+function spawnEnemy() {
+    const itemTypeKeys = Object.keys(itemTypes);
+    const randomType = itemTypeKeys[Math.floor(Math.random() * itemTypeKeys.length)];
+    const itemData = itemTypes[randomType];
     
-    const item = document.createElement("div");
-    item.classList.add("item");
-
-    const itemType = Math.random();
-    let itemData = {};
-
-    if (itemType < 0.25) {
-        itemData = { icon: "💀", type: "toxic", points: -20 };
-    } else if (itemType < 0.5) {
-        itemData = { icon: "💖", type: "love", points: 15 };
-    } else if (itemType < 0.75) {
-        itemData = { icon: "⭐", type: "star", points: 25 };
-    } else {
-        itemData = { icon: "💎", type: "gem", points: 40 };
-    }
-
-    item.innerHTML = itemData.icon;
-    item.onclick = () => {
+    const item = document.createElement('div');
+    item.classList.add('item');
+    item.textContent = itemData.icon;
+    item.style.left = Math.random() * (gameElements.gameArea.offsetWidth - 50) + 'px';
+    item.style.top = Math.random() * (gameElements.gameArea.offsetHeight - 50) + 'px';
+    
+    item.onclick = (e) => {
+        e.stopPropagation();
         handleItemClick(item, itemData);
     };
-
-    item.style.left = Math.random() * (gameArea.offsetWidth - 40) + "px";
-    item.style.top = Math.random() * (gameArea.offsetHeight - 40) + "px";
-
-    gameArea.appendChild(item);
-
+    
+    gameElements.gameArea.appendChild(item);
+    
     setTimeout(() => {
         if (item.parentNode) item.remove();
-    }, 2000);
+    }, 2500);
 }
 
 function handleItemClick(item, itemData) {
-    item.remove();
+    playSound('hit');
     
-    if (itemData.type === "toxic") {
-        lives -= 15;
+    if (itemData.type === 'heal') {
+        gameState.hp = Math.min(gameState.hp - itemData.points, gameState.maxHp);
+    } else if (itemData.type === 'bomb') {
+        gameState.hp -= Math.abs(itemData.points);
     } else {
-        score += itemData.points;
-        mana = Math.min(mana + 10, maxMana);
+        gameState.score += itemData.points;
+        gameState.mana = Math.min(gameState.mana + 5, gameState.maxMana);
     }
     
+    item.classList.add('damage');
+    setTimeout(() => item.remove(), 500);
+    
     updateUI();
-    checkGame();
+    checkGameState();
 }
 
-function activateAbility() {
-    if (abilityOnCooldown || mana < 30) {
-        showCustomAlert("⏱️ Cooldown", "Ability is on cooldown or not enough mana!");
+function useAbility(abilityNum) {
+    if (gameState.mana < 30) {
+        showAlert('💫 Insufficient Mana', 'You need 30 mana to use ability!');
         return;
     }
     
-    abilityOnCooldown = true;
-    mana -= 30;
-    score += abilityDamage * 2;
+    playSound('levelup');
+    gameState.mana -= 30;
+    gameState.score += heroes[gameState.selectedHero].damage * 2;
     
-    abilityBtn.disabled = true;
-    let cooldownTime = 10;
+    const btn = abilityNum === 1 ? gameElements.ability1Btn : gameElements.ability2Btn;
+    const cdDisplay = abilityNum === 1 ? gameElements.ability1Cd : gameElements.ability2Cd;
     
-    const cooldownInterval = setInterval(() => {
-        cooldownTime--;
-        cooldownDisplay.innerText = cooldownTime + "s";
-        
-        if (cooldownTime <= 0) {
-            clearInterval(cooldownInterval);
-            abilityOnCooldown = false;
-            abilityBtn.disabled = false;
-            cooldownDisplay.innerText = "Ready";
+    btn.disabled = true;
+    let cooldown = 8;
+    cdDisplay.textContent = cooldown;
+    
+    const cdInterval = setInterval(() => {
+        cooldown--;
+        cdDisplay.textContent = cooldown > 0 ? cooldown : '';
+        if (cooldown <= 0) {
+            clearInterval(cdInterval);
+            btn.disabled = false;
         }
     }, 1000);
     
     updateUI();
 }
 
-function updateTimer() {
-    gameTime--;
-    timerDisplay.innerText = gameTime + "s";
+function updateUI() {
+    gameElements.score.textContent = gameState.score;
+    gameElements.hp.textContent = Math.max(0, gameState.hp);
+    gameElements.mana.textContent = gameState.mana;
+    gameElements.heroLevelMini.textContent = `Lv ${gameState.level}`;
+    gameElements.rankDisplay.textContent = gameState.rank;
     
-    if (gameTime <= 10) {
-        timerDisplay.style.color = "#ff6b6b";
+    const hpPercent = (gameState.hp / gameState.maxHp) * 100;
+    gameElements.hpFill.style.width = hpPercent + '%';
+    
+    // Level up
+    if (gameState.score >= 150 && gameState.level === 1) {
+        gameState.level = 2;
+        showAlert('⬆️ Level Up!', 'You reached Level 2!');
+    }
+    if (gameState.score >= 350 && gameState.level === 2) {
+        gameState.level = 3;
+        showAlert('⬆️ Level Up!', 'You reached Level 3!');
+    }
+    if (gameState.score >= 600 && gameState.level === 3) {
+        gameState.level = 4;
+        showAlert('⬆️ MYTHIC!', 'You reached MYTHIC rank!');
     }
     
-    if (gameTime <= 0) {
-        clearInterval(countdownInterval);
+    // Rank update
+    if (gameState.score >= 100 && gameState.rank === 'WARRIOR') {
+        gameState.rank = 'EPIC';
+    }
+    if (gameState.score >= 300 && gameState.rank === 'EPIC') {
+        gameState.rank = 'MYTHIC';
+    }
+    if (gameState.score >= 600 && gameState.rank === 'MYTHIC') {
+        gameState.rank = 'LEGENDARY';
+    }
+}
+
+function updateTimer() {
+    gameElements.timer.textContent = gameState.gameTime;
+    if (gameState.gameTime <= 10) {
+        gameElements.timer.style.color = '#ff6b6b';
+        gameElements.timer.style.textShadow = '0 0 10px #ff6b6b';
+    }
+}
+
+function checkGameState() {
+    if (gameState.hp <= 0) {
+        gameState.gameRunning = false;
         endGame();
     }
 }
 
-function updateUI() {
-    scoreText.innerText = score;
-    livesText.innerText = Math.max(0, lives);
-    manaText.innerText = Math.min(mana, maxMana);
-    heroLevelDisplay.innerText = "Level " + level;
-
-    if (score >= 100 && level === 1) {
-        level = 2;
-        showCustomAlert("⬆️ Level Up!", "You reached Level 2!");
-    }
-    if (score >= 250 && level === 2) {
-        level = 3;
-        showCustomAlert("⬆️ Level Up!", "You reached Level 3!");
-    }
-    if (score >= 500 && level === 3) {
-        level = 4;
-        showCustomAlert("⬆️ Level Up!", "You reached MYTHIC!");
-    }
-
-    if (score >= 50 && rank === 1) {
-        rank = 2;
-        rankText.innerText = "Rank: Epic";
-    }
-    if (score >= 150 && rank === 2) {
-        rank = 3;
-        rankText.innerText = "Rank: Mythic";
-    }
-    if (score >= 300 && rank === 3) {
-        rank = 4;
-        rankText.innerText = "Rank: Legendary";
-    }
-}
-
-function checkGame() {
-    if (lives <= 0) {
-        gameRunning = false;
-        clearInterval(gameInterval);
-        clearInterval(countdownInterval);
-        showDefeat();
-    }
-}
-
 function endGame() {
-    gameRunning = false;
-    clearInterval(gameInterval);
-    if (score >= 300) {
-        showVictory();
+    clearInterval(gameState.spawnInterval);
+    clearInterval(gameState.timerInterval);
+    gameState.gameRunning = false;
+    
+    showResults();
+}
+
+function resetGame() {
+    gameState = {
+        score: 0,
+        hp: 100,
+        maxHp: 100,
+        mana: 50,
+        maxMana: 100,
+        level: 1,
+        rank: 'WARRIOR',
+        gameTime: 60,
+        gameRunning: false,
+        selectedHero: null,
+        musicOn: gameState.musicOn
+    };
+}
+
+// ===== RESULTS =====
+function showResults() {
+    const hero = heroes[gameState.selectedHero];
+    const isvictory = gameState.score >= 300;
+    
+    document.getElementById('result-title').textContent = isvictory ? '🏆 VICTORY! 🏆' : '💔 DEFEAT 💔';
+    document.getElementById('result-title').style.color = isvictory ? '#ffd700' : '#ff6b6b';
+    document.getElementById('final-score').textContent = gameState.score;
+    document.getElementById('final-rank').textContent = gameState.rank;
+    document.getElementById('final-hero').textContent = hero.name;
+    
+    let message = '';
+    if (isvictory) {
+        message = `You conquered the battlefield as ${hero.name}!\nYour love for the game is unstoppable! 💕`;
     } else {
-        showDefeat();
+        message = `Better luck next time!\nEvery warrior has their battles.`;
+    }
+    document.getElementById('result-message').textContent = message;
+    
+    switchScreen('result');
+}
+
+// ===== AUDIO =====
+function toggleMusic() {
+    gameState.musicOn = !gameState.musicOn;
+    const btn = document.getElementById('musicToggle');
+    btn.textContent = gameState.musicOn ? '🔊 MUSIC ON' : '🔇 MUSIC OFF';
+}
+
+function playSound(type) {
+    if (!gameState.musicOn) return;
+    // Simple beep using Web Audio API
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    switch(type) {
+        case 'click':
+            oscillator.frequency.value = 800;
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.1);
+            break;
+        case 'hit':
+            oscillator.frequency.value = 600;
+            gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.15);
+            break;
+        case 'levelup':
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            oscillator.frequency.setValueAtTime(1200, audioContext.currentTime + 0.1);
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.2);
+            break;
     }
 }
 
-function showCustomAlert(title, message) {
-    const modal = document.getElementById("custom-modal");
-    document.getElementById("modal-title").innerText = title;
-    document.getElementById("modal-message").innerText = message;
-    modal.classList.remove("hidden");
+// ===== MODAL ALERTS =====
+function showAlert(title, message) {
+    const modal = document.getElementById('custom-modal');
+    document.getElementById('modal-header').textContent = title;
+    document.getElementById('modal-message').textContent = message;
+    modal.classList.remove('hidden');
 }
 
 function closeModal() {
-    document.getElementById("custom-modal").classList.add("hidden");
+    document.getElementById('custom-modal').classList.add('hidden');
 }
 
-function showVictory() {
-    const heroName = heroes[selectedHero].name;
-    showCustomAlert(
-        "🏆 VICTORY! 🏆",
-        `Congratulations!\n\nYou achieved LEGENDARY rank with ${heroName}!\n\nFinal Score: ${score}\n\nYou have officially captured my heart! 💕`
-    );
-    
-    startBtn.innerText = "PLAY AGAIN";
-    startBtn.classList.remove("hidden");
-    pauseBtn.classList.add("hidden");
-}
+// Close modal on outside click
+document.getElementById('custom-modal').addEventListener('click', (e) => {
+    if (e.target.id === 'custom-modal') closeModal();
+});
 
-function showDefeat() {
-    const heroName = heroes[selectedHero] ? heroes[selectedHero].name : "Unknown";
-    showCustomAlert(
-        "💔 DEFEAT 💔",
-        `Game Over!\n\nHero: ${heroName}\nFinal Score: ${score}\n\nTry again to claim victory!`
-    );
-    
-    startBtn.innerText = "TRY AGAIN";
-    startBtn.classList.remove("hidden");
-    pauseBtn.classList.add("hidden");
-}
+// Initialize
+window.addEventListener('load', () => {
+    switchScreen('home');
+});

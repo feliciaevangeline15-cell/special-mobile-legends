@@ -1,83 +1,173 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Special Mobile Legends</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div id="hero-select" class="hero-select-screen">
-    <h1>SELECT YOUR HERO</h1>
-    <div class="heroes-grid">
-        <div class="hero-card" data-hero="mage" onclick="selectHero('mage')">
-            <div class="hero-icon">🔥</div>
-            <h3>Pyromancer</h3>
-            <p>Mage - High Damage</p>
+<!-- HOME SCREEN -->
+<div id="home-screen" class="screen active">
+    <div class="home-container">
+        <div class="logo">
+            <div class="logo-icon">⚔️</div>
+            <h1>SPECIAL MOBILE LEGENDS</h1>
         </div>
-        <div class="hero-card" data-hero="warrior" onclick="selectHero('warrior')">
-            <div class="hero-icon">⚔️</div>
-            <h3>Berserker</h3>
-            <p>Warrior - Balanced</p>
+        <div class="home-content">
+            <p class="tagline">Capture My Heart in Battle</p>
+            <button id="playBtn" class="btn-primary btn-large">ENTER GAME</button>
         </div>
-        <div class="hero-card" data-hero="assassin" onclick="selectHero('assassin')">
-            <div class="hero-icon">🗡️</div>
-            <h3>Shadow</h3>
-            <p>Assassin - High Speed</p>
+        <div class="music-toggle">
+            <button id="musicToggle" class="btn-music">🔊 MUSIC ON</button>
         </div>
     </div>
 </div>
 
-<div id="game-container" class="hidden">
-    <div class="container">
-        <div class="top-bar">
-            <div class="left-info">
-                <h1 class="title">⚔️ Special Mobile Legends ⚔️</h1>
-                <h2 id="rank" class="rank-display">Rank: Warrior</h2>
-            </div>
-            <div class="timer-section">
-                <div id="timer" class="timer">60s</div>
-            </div>
-        </div>
-
-        <div class="game-main">
-            <div class="left-panel">
-                <div class="hero-info">
-                    <h3>HERO</h3>
-                    <div id="hero-name" class="hero-name">Select Hero</div>
-                    <div id="hero-level" class="level">Level 1</div>
-                </div>
-                <div class="stats-panel">
-                    <div class="stat">⭐ Stars: <span id="score">0</span></div>
-                    <div class="stat">❤️ HP: <span id="lives">100</span>/100</div>
-                    <div class="stat">⚡ Mana: <span id="mana">50</span>/100</div>
+<!-- HERO SELECT SCREEN -->
+<div id="hero-select-screen" class="screen">
+    <div class="hero-select-container">
+        <h1>SELECT YOUR HERO</h1>
+        <p class="select-subtitle">Choose your warrior and dive into battle</p>
+        <div class="heroes-grid">
+            <div class="hero-card" onclick="selectHero('mage')">
+                <div class="hero-avatar mage-avatar">🔥</div>
+                <h3>Pyromancer</h3>
+                <p class="role">Mage</p>
+                <div class="hero-stats">
+                    <div class="stat">ATK: 30</div>
+                    <div class="stat">SPD: ⚡⚡</div>
                 </div>
             </div>
-
-            <div id="game-area" class="game-area"></div>
-
-            <div class="right-panel">
-                <div class="abilities">
-                    <h3>ABILITIES</h3>
-                    <button id="abilityBtn" class="ability-btn" title="Click to activate ability (10s cooldown)">ACTIVATE ABILITY</button>
-                    <div id="cooldown" class="cooldown-display">Ready</div>
+            <div class="hero-card" onclick="selectHero('warrior')">
+                <div class="hero-avatar warrior-avatar">⚔️</div>
+                <h3>Berserker</h3>
+                <p class="role">Warrior</p>
+                <div class="hero-stats">
+                    <div class="stat">ATK: 20</div>
+                    <div class="stat">SPD: ⚡⚡⚡</div>
                 </div>
             </div>
-        </div>
-
-        <div class="button-group">
-            <button id="startBtn" class="start-btn">START MATCH</button>
-            <button id="pauseBtn" class="pause-btn hidden">PAUSE</button>
+            <div class="hero-card" onclick="selectHero('assassin')">
+                <div class="hero-avatar assassin-avatar">🗡️</div>
+                <h3>Shadow</h3>
+                <p class="role">Assassin</p>
+                <div class="hero-stats">
+                    <div class="stat">ATK: 40</div>
+                    <div class="stat">SPD: ⚡⚡⚡⚡</div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
+<!-- GAME SCREEN (BATTLE) -->
+<div id="game-screen" class="screen">
+    <div class="game-container">
+        <!-- TOP BAR -->
+        <div class="game-top">
+            <div class="hero-indicator">
+                <div class="hero-avatar-mini" id="hero-avatar-mini">⚔️</div>
+                <div class="hero-info-mini">
+                    <div class="hero-name-mini" id="hero-name-mini">Hero</div>
+                    <div class="hero-level-mini" id="hero-level-mini">Lv 1</div>
+                </div>
+            </div>
+            <div class="battle-timer">
+                <div class="timer-circle">
+                    <div class="timer-text" id="timer">60</div>
+                </div>
+            </div>
+            <div class="rank-display" id="rank-display">WARRIOR</div>
+        </div>
+
+        <!-- BATTLE AREA -->
+        <div class="battle-area" id="game-area"></div>
+
+        <!-- BOTTOM HUD -->
+        <div class="game-bottom">
+            <!-- HEALTH & STATS -->
+            <div class="stats-container">
+                <div class="hp-bar">
+                    <div class="hp-label">HP</div>
+                    <div class="hp-fill-container">
+                        <div class="hp-fill" id="hp-fill"></div>
+                    </div>
+                    <div class="hp-text"><span id="hp-current">100</span>/<span id="hp-max">100</span></div>
+                </div>
+                <div class="score-display">
+                    <div class="score-item">⭐ <span id="score">0</span></div>
+                    <div class="score-item">⚡ <span id="mana">50</span>/100</div>
+                </div>
+            </div>
+
+            <!-- ABILITIES -->
+            <div class="abilities-container">
+                <button id="ability1-btn" class="ability-btn ability-primary" title="ULTIMATE ABILITY">
+                    <div class="ability-icon">💥</div>
+                    <div class="ability-cooldown" id="ability1-cd"></div>
+                </button>
+                <button id="ability2-btn" class="ability-btn ability-secondary" title="SECONDARY ABILITY">
+                    <div class="ability-icon">⚡</div>
+                    <div class="ability-cooldown" id="ability2-cd"></div>
+                </button>
+            </div>
+
+            <!-- CONTROL BUTTONS -->
+            <div class="control-buttons">
+                <button id="startGameBtn" class="btn-control btn-play">▶ START</button>
+                <button id="pauseGameBtn" class="btn-control btn-pause hidden">⏸ PAUSE</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- RESULT SCREEN -->
+<div id="result-screen" class="screen">
+    <div class="result-container">
+        <div class="result-bg"></div>
+        <div class="result-content">
+            <h1 id="result-title">VICTORY!</h1>
+            <div class="result-stats">
+                <div class="result-stat">
+                    <div class="result-label">Final Score</div>
+                    <div class="result-value" id="final-score">0</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-label">Rank Achieved</div>
+                    <div class="result-value" id="final-rank">WARRIOR</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-label">Hero Used</div>
+                    <div class="result-value" id="final-hero">Hero</div>
+                </div>
+            </div>
+            <p class="result-message" id="result-message"></p>
+            <div class="result-buttons">
+                <button class="btn-primary" onclick="goHome()">HOME</button>
+                <button class="btn-primary" onclick="selectHeroScreen()">PLAY AGAIN</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CUSTOM MODAL -->
 <div id="custom-modal" class="modal hidden">
     <div class="modal-content">
-        <h2 id="modal-title">Modal Title</h2>
-        <p id="modal-message">Modal message</p>
-        <button id="modal-btn" onclick="closeModal()">OK</button>
+        <div class="modal-header" id="modal-header"></div>
+        <p id="modal-message"></p>
+        <button class="btn-primary" onclick="closeModal()">OK</button>
     </div>
 </div>
+
+<!-- AUDIO ELEMENTS -->
+<audio id="bgm" loop>
+    <source src="data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==" type="audio/wav">
+</audio>
+<audio id="sfx-click"></audio>
+<audio id="sfx-hit"></audio>
+<audio id="sfx-levelup"></audio>
 
 <script src="script.js"></script>
 </body>
