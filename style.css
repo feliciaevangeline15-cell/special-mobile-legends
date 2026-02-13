@@ -1,0 +1,32 @@
+body {
+    text-align: center;
+    font-family: Arial;
+    background-color: #ffe6f0;
+}
+
+#game-area {
+    width: 400px;
+    height: 400px;
+    background: white;
+    margin: 20px auto;
+    position: relative;
+    border: 3px solid pink;
+    overflow: hidden;
+}
+
+.enemy, .toxic {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    cursor: pointer;
+    font-size: 30px;
+}
+
+button {
+    padding: 10px 20px;
+    background: hotpink;
+    color: white;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
