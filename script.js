@@ -158,6 +158,9 @@ function pauseGame() {
 }
 
 function spawnEnemy() {
+    // Limit max items on screen
+    if (gameElements.gameArea.children.length > 15) return;
+    
     const itemTypeKeys = Object.keys(itemTypes);
     const randomType = itemTypeKeys[Math.floor(Math.random() * itemTypeKeys.length)];
     const itemData = itemTypes[randomType];
@@ -229,11 +232,22 @@ function useAbility(abilityNum) {
 }
 
 function updateUI() {
-    gameElements.score.textContent = gameState.score;
-    gameElements.hp.textContent = Math.max(0, gameState.hp);
-    gameElements.mana.textContent = gameState.mana;
-    gameElements.heroLevelMini.textContent = `Lv ${gameState.level}`;
-    gameElements.rankDisplay.textContent = gameState.rank;
+    // Only update if values changed
+    if (gameElements.score.textContent !== gameState.score.toString()) {
+        gameElements.score.textContent = gameState.score;
+    }
+    if (gameElements.hp.textContent !== Math.max(0, gameState.hp).toString()) {
+        gameElements.hp.textContent = Math.max(0, gameState.hp);
+    }
+    if (gameElements.mana.textContent !== gameState.mana.toString()) {
+        gameElements.mana.textContent = gameState.mana;
+    }
+    if (gameElements.heroLevelMini.textContent !== `Lv ${gameState.level}`) {
+        gameElements.heroLevelMini.textContent = `Lv ${gameState.level}`;
+    }
+    if (gameElements.rankDisplay.textContent !== gameState.rank) {
+        gameElements.rankDisplay.textContent = gameState.rank;
+    }
     
     const hpPercent = (gameState.hp / gameState.maxHp) * 100;
     gameElements.hpFill.style.width = hpPercent + '%';
@@ -326,6 +340,15 @@ function showResults() {
 }
 
 // ===== AUDIO =====
+let audioContext = null;
+
+function getAudioContext() {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    return audioContext;
+}
+
 function toggleMusic() {
     gameState.musicOn = !gameState.musicOn;
     const btn = document.getElementById('musicToggle');
@@ -334,37 +357,40 @@ function toggleMusic() {
 
 function playSound(type) {
     if (!gameState.musicOn) return;
-    // Simple beep using Web Audio API
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-    
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    
-    switch(type) {
-        case 'click':
-            oscillator.frequency.value = 800;
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.1);
-            break;
-        case 'hit':
-            oscillator.frequency.value = 600;
-            gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.15);
-            break;
-        case 'levelup':
-            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-            oscillator.frequency.setValueAtTime(1200, audioContext.currentTime + 0.1);
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.2);
-            break;
+    try {
+        const ctx = getAudioContext();
+        const oscillator = ctx.createOscillator();
+        const gainNode = ctx.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(ctx.destination);
+        
+        switch(type) {
+            case 'click':
+                oscillator.frequency.value = 800;
+                gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+                oscillator.start(ctx.currentTime);
+                oscillator.stop(ctx.currentTime + 0.1);
+                break;
+            case 'hit':
+                oscillator.frequency.value = 600;
+                gainNode.gain.setValueAtTime(0.2, ctx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+                oscillator.start(ctx.currentTime);
+                oscillator.stop(ctx.currentTime + 0.15);
+                break;
+            case 'levelup':
+                oscillator.frequency.setValueAtTime(800, ctx.currentTime);
+                oscillator.frequency.setValueAtTime(1200, ctx.currentTime + 0.1);
+                gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+                oscillator.start(ctx.currentTime);
+                oscillator.stop(ctx.currentTime + 0.2);
+                break;
+        }
+    } catch (e) {
+        console.log('Audio disabled');
     }
 }
 
@@ -379,11 +405,6 @@ function showAlert(title, message) {
 function closeModal() {
     document.getElementById('custom-modal').classList.add('hidden');
 }
-
-// Close modal on outside click
-document.getElementById('custom-modal').addEventListener('click', (e) => {
-    if (e.target.id === 'custom-modal') closeModal();
-});
 
 // Initialize
 window.addEventListener('load', () => {
