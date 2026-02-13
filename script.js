@@ -49,42 +49,69 @@ const itemTypes = {
 
 // ===== DOM ELEMENTS =====
 const screens = {
-    home: document.getElementById('home-screen'),
-    heroSelect: document.getElementById('hero-select-screen'),
-    game: document.getElementById('game-screen'),
-    result: document.getElementById('result-screen')
+    home: null,
+    heroSelect: null,
+    game: null,
+    result: null
 };
 
 const gameElements = {
-    gameArea: document.getElementById('game-area'),
-    score: document.getElementById('score'),
-    hp: document.getElementById('hp-current'),
-    hpFill: document.getElementById('hp-fill'),
-    mana: document.getElementById('mana'),
-    timer: document.getElementById('timer'),
-    rankDisplay: document.getElementById('rank-display'),
-    heroNameMini: document.getElementById('hero-name-mini'),
-    heroLevelMini: document.getElementById('hero-level-mini'),
-    heroAvatarMini: document.getElementById('hero-avatar-mini'),
-    ability1Btn: document.getElementById('ability1-btn'),
-    ability2Btn: document.getElementById('ability2-btn'),
-    ability1Cd: document.getElementById('ability1-cd'),
-    ability2Cd: document.getElementById('ability2-cd'),
-    startBtn: document.getElementById('startGameBtn'),
-    pauseGameBtn: document.getElementById('pauseGameBtn')
+    gameArea: null,
+    score: null,
+    hp: null,
+    hpFill: null,
+    mana: null,
+    timer: null,
+    rankDisplay: null,
+    heroNameMini: null,
+    heroLevelMini: null,
+    heroAvatarMini: null,
+    ability1Btn: null,
+    ability2Btn: null,
+    ability1Cd: null,
+    ability2Cd: null,
+    startBtn: null,
+    pauseGameBtn: null
 };
 
-// ===== EVENT LISTENERS =====
-document.getElementById('playBtn').addEventListener('click', () => {
-    switchScreen('heroSelect');
-    playSound('click');
-});
+// Initialize DOM references
+function initDOMElements() {
+    screens.home = document.getElementById('home-screen');
+    screens.heroSelect = document.getElementById('hero-select-screen');
+    screens.game = document.getElementById('game-screen');
+    screens.result = document.getElementById('result-screen');
+    
+    gameElements.gameArea = document.getElementById('game-area');
+    gameElements.score = document.getElementById('score');
+    gameElements.hp = document.getElementById('hp-current');
+    gameElements.hpFill = document.getElementById('hp-fill');
+    gameElements.mana = document.getElementById('mana');
+    gameElements.timer = document.getElementById('timer');
+    gameElements.rankDisplay = document.getElementById('rank-display');
+    gameElements.heroNameMini = document.getElementById('hero-name-mini');
+    gameElements.heroLevelMini = document.getElementById('hero-level-mini');
+    gameElements.heroAvatarMini = document.getElementById('hero-avatar-mini');
+    gameElements.ability1Btn = document.getElementById('ability1-btn');
+    gameElements.ability2Btn = document.getElementById('ability2-btn');
+    gameElements.ability1Cd = document.getElementById('ability1-cd');
+    gameElements.ability2Cd = document.getElementById('ability2-cd');
+    gameElements.startBtn = document.getElementById('startGameBtn');
+    gameElements.pauseGameBtn = document.getElementById('pauseGameBtn');
+}
 
-document.getElementById('musicToggle').addEventListener('click', toggleMusic);
-gameElements.startBtn.addEventListener('click', startGame);
-gameElements.pauseGameBtn.addEventListener('click', pauseGame);
-gameElements.ability1Btn.addEventListener('click', () => useAbility(1));
-gameElements.ability2Btn.addEventListener('click', () => useAbility(2));
+// ===== EVENT LISTENERS =====
+function initEventListeners() {
+    document.getElementById('playBtn').addEventListener('click', () => {
+        switchScreen('heroSelect');
+        playSound('click');
+    });
+
+    document.getElementById('musicToggle').addEventListener('click', toggleMusic);
+    gameElements.startBtn.addEventListener('click', startGame);
+    gameElements.pauseGameBtn.addEventListener('click', pauseGame);
+    gameElements.ability1Btn.addEventListener('click', () => useAbility(1));
+    gameElements.ability2Btn.addEventListener('click', () => useAbility(2));
+}
 
 // ===== SCREEN MANAGEMENT =====
 function switchScreen(screenName) {
@@ -412,5 +439,7 @@ function closeModal() {
 
 // Initialize
 window.addEventListener('load', () => {
+    initDOMElements();
+    initEventListeners();
     switchScreen('home');
 });
