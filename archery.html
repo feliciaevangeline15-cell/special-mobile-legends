@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Archery Game</title>
+  <style>
+    body { background: linear-gradient(135deg,#1a0f2e,#2b0435); color: #fff; font-family: Arial, sans-serif; }
+    .archery-container { max-width: 500px; margin: 40px auto; background: rgba(0,0,0,0.35); border-radius: 16px; padding: 24px; text-align: center; }
+    #archery-canvas { background: #222; border-radius: 12px; display: block; margin: 0 auto 18px auto; box-shadow: 0 4px 16px #0008; }
+    .score-row { font-size: 18px; margin-bottom: 10px; }
+    .btn-shoot { padding: 12px 32px; font-size: 18px; border-radius: 8px; background: linear-gradient(45deg,#ff6b6b,#ff8e8e); color: #fff; border: none; cursor: pointer; font-weight: bold; margin-top: 10px; }
+    #archery-result { min-height: 24px; margin-top: 10px; font-size: 16px; color: #ffd1e6; }
+  </style>
+</head>
+<body>
+  <div class="archery-container">
+    <h2>Archery Challenge</h2>
+    <div class="score-row">Score: <span id="archery-score">0</span> | Shots: <span id="archery-shots">0</span></div>
+    <canvas id="archery-canvas" width="400" height="220"></canvas>
+    <button class="btn-shoot" id="archery-shoot">Shoot</button>
+    <div id="archery-result"></div>
+    <button class="btn-shoot" id="archery-restart" style="margin-top:18px;display:none">Restart</button>
+  </div>
+  <script src="archery.js"></script>
+</body>
+</html>

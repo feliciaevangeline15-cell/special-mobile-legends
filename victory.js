@@ -30,6 +30,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Redirect back to the battle arena and tell it which level to start
         window.location.href = `battle-arena.html?startLevel=${nextLevel}`;
     });
+    document.getElementById('extra-game').addEventListener('click', () => {
+        // Launch Love Memory Match game
+        window.location.href = 'memory-match.html';
+    });
     document.getElementById('return-home').addEventListener('click', () => {
         window.location.href = 'home.html';
     });

@@ -4,12 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mobile Legends: Love Edition</title>
+    <style>
+        .game-link-btn { display:inline-block; margin:12px 0; padding:14px 32px; font-size:20px; border-radius:10px; background:linear-gradient(45deg,#6b9eff,#ffd700); color:#222; font-weight:bold; border:none; text-decoration:none; transition:box-shadow .2s; box-shadow:0 2px 8px #0003; }
+        .game-link-btn:hover { box-shadow:0 4px 16px #0005; background:linear-gradient(45deg,#ffd700,#6b9eff); color:#111; }
+    </style>
 </head>
 <body>
-    <script>
-        // Redirect to home page
-        window.location.href = 'home.html';
-    </script>
+        <script>
+                // Redirect to home page
+                window.location.href = 'home.html';
+        </script>
 </body>
 </html>
     <div class="home-container">
@@ -36,6 +40,10 @@
                 <div class="hero-avatar mage-avatar">🧙‍♀️</div>
                 <h3>Luna</h3>
                 <p class="role">Fire Mage 🔥</p>
+    </div>
+    <div style="text-align:center;margin:32px 0;">
+
+    </div>
                 <div class="hero-stats">
                     <div class="stat">ATK: 35 | SPD: ⚡⚡</div>
                     <div class="stat" style="font-size: 11px; color: #999; margin-top: 5px;">Balanced</div>
@@ -143,6 +151,7 @@
             <div class="result-buttons">
                 <button class="btn-primary" onclick="goHome()">HOME</button>
                 <button class="btn-primary" onclick="selectHeroScreen()">PLAY AGAIN</button>
+                <a class="btn-primary" href="archery.html" style="margin-left:10px;">🎯 EXTRA GAME</a>
             </div>
         </div>
     </div>

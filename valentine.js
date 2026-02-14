@@ -93,10 +93,10 @@ const skillsContent = {
                 These are the moments that define us. Every laugh, every tear, every quiet moment together...
             </p>
             <div class="modal-gallery">
-                <img src="https://via.placeholder.com/250x250?text=MEMORY+1" alt="Memory 1">
-                <img src="https://via.placeholder.com/250x250?text=MEMORY+2" alt="Memory 2">
-                <img src="https://via.placeholder.com/250x250?text=MEMORY+3" alt="Memory 3">
-                <img src="https://via.placeholder.com/250x250?text=MEMORY+4" alt="Memory 4">
+                <img src="WhatsApp Image 2026-02-14 at 14.57.11.jpeg" alt="Memory 2">
+                <img src="WhatsApp Image 2026-02-14 at 14.57.11 (1).jpeg" alt="Memory 1">
+                <img src="WhatsApp Image 2026-02-14 at 14.57.11 (2).jpeg" alt="Memory 3">
+                <img src="WhatsApp Image 2026-02-14 at 14.57.11 (3).jpeg" alt="Memory 4">
             </div>
             <p style="margin-top: 20px; text-align: center; color: #ffd700; font-weight: bold;">
                 Our greatest adventures are just beginning... 🌟
@@ -149,8 +149,12 @@ function goToLoading() {
     switchScreen('loading-screen');
 }
 
-function gotoArena() {
-    window.location.href = 'battle-arena.html';
+function goToMemoryMatch() {
+    window.location.href = 'memory-match.html';
+}
+
+function goToBattle() {
+    window.location.href = 'battle-hero-select.html';
 }
 
 function goToHome() {

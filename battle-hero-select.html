@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Your Hero - The Grand Love Arena</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a14 0%, #1a0f2e 100%);
+            color: #e0e0e0;
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .hero-select-container {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(10, 10, 20, 0.8);
+            border: 3px solid #FFD700;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
+            text-align: center;
+        }
+
+        .select-header {
+            margin-bottom: 50px;
+        }
+
+        .select-header h1 {
+            font-size: 42px;
+            color: #FFD700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .select-header p {
+            font-size: 16px;
+            color: #FF6B9D;
+            letter-spacing: 1px;
+        }
+
+        .heroes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .hero-card {
+            background: rgba(255, 23, 68, 0.05);
+            border: 3px solid #FFD700;
+            border-radius: 20px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            border-color: #FF6B9D;
+        }
+
+        .hero-card.selected {
+            background: linear-gradient(135deg, rgba(255, 23, 68, 0.2), rgba(255, 107, 157, 0.2));
+            border-color: #FF6B9D;
+            box-shadow: 0 0 40px rgba(255, 107, 157, 0.6);
+        }
+
+        .hero-card.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 32px;
+            color: #FFD700;
+            background: linear-gradient(135deg, #FF1744, #FF6B9D);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 300px;
+            border-radius: 15px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            transition: all 0.3s;
+        }
+
+        .hero-card:hover .hero-image {
+            border-color: #FFD700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .hero-name {
+            font-size: 28px;
+            color: #FFD700;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+        }
+
+        .hero-title {
+            font-size: 14px;
+            color: #FF6B9D;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .hero-description {
+            font-size: 13px;
+            color: #bbb;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .stat {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            font-size: 12px;
+        }
+
+        .stat-label {
+            color: #aaa;
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            color: #FFD700;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 16px;
+            font-weight: bold;
+            border: 2px solid #FFD700;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #FF1744, #FF6B9D);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: linear-gradient(135deg, #FF6B9D, #FF1744);
+            box-shadow: 0 0 25px rgba(255, 107, 157, 0.6);
+            transform: scale(1.05);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 215, 0, 0.1);
+            color: #FFD700;
+            border-color: #FFD700;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 215, 0, 0.2);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .status-text {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 215, 0, 0.05);
+            border-radius: 8px;
+            border-left: 4px solid #FFD700;
+            color: #FFD700;
+            font-size: 14px;
+            display: none;
+        }
+
+        .status-text.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .hero-select-container {
+                padding: 30px;
+            }
+
+            .select-header h1 {
+                font-size: 32px;
+            }
+
+            .heroes-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-select-container animate__animated animate__fadeIn">
+        <div class="select-header">
+            <h1>⚔️ CHOOSE YOUR HERO ⚔️</h1>
+            <p>Select your champion to enter the battle arena and strengthen your bond</p>
+        </div>
+
+        <div class="heroes-grid">
+            <!-- AYEN -->
+            <div class="hero-card" onclick="selectHero('ayen')">
+                <img src="WhatsApp Image 2026-02-14 at 19.33.16.jpeg" alt="Ayen" class="hero-image">
+                <div class="hero-name">AYEN</div>
+                <div class="hero-title">The Protector</div>
+                <div class="hero-description">Strong, loyal, and always ready to defend what matters most. Your unwavering support is our greatest strength.</div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-label">Strength</div>
+                        <div class="stat-value">★★★★★</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Loyalty</div>
+                        <div class="stat-value">★★★★★</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Courage</div>
+                        <div class="stat-value">★★★★★</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Love</div>
+                        <div class="stat-value">∞</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FELIS -->
+            <div class="hero-card" onclick="selectHero('felis')">
+                <img src="WhatsApp Image 2026-02-14 at 19.35.06.jpeg" alt="Felis" class="hero-image">
+                <div class="hero-name">FELIS</div>
+                <div class="hero-title">The Light Bearer</div>
+                <div class="hero-description">Radiant, compassionate, and the beacon of hope in our journey. Your love illuminates even the darkest moments.</div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-label">Wisdom</div>
+                        <div class="stat-value">★★★★★</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Compassion</div>
+                        <div class="stat-value">★★★★★</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Hope</div>
+                        <div class="stat-value">★★★★★</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Love</div>
+                        <div class="stat-value">∞</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="status-text" id="status-text">
+            ✓ Hero selected! Ready to enter the arena.
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-primary" id="start-battle-btn" onclick="startBattle()" disabled>
+                🔥 START BATTLE 🔥
+            </button>
+            <a href="valentine.html" class="btn btn-secondary">← BACK TO PROFILE</a>
+        </div>
+    </div>
+
+    <script>
+        let selectedHero = null;
+
+        function selectHero(hero) {
+            // Remove previous selection
+            document.querySelectorAll('.hero-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            // Add selection to clicked hero
+            event.currentTarget.classList.add('selected');
+            selectedHero = hero;
+
+            // Show status and enable button
+            document.getElementById('status-text').classList.add('show');
+            document.getElementById('start-battle-btn').disabled = false;
+        }
+
+        function startBattle() {
+            if (selectedHero) {
+                // Redirect to battle arena with selected hero
+                window.location.href = `battle-arena.html?hero=${selectedHero}`;
+            }
+        }
+    </script>
+</body>
+</html>

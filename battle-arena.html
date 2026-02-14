@@ -90,48 +90,17 @@
             </div>
 
             <!-- ACTION BUTTONS SECTION -->
-            <div class="actions-section">
-                <div class="actions-row">
-                    <h3>The Protector's Skills:</h3>
-                    <div class="skills-grid">
-                        <button class="skill-btn protector-skill" onclick="useSkill('embrace', 'protector')">
-                            <span class="skill-icon">🤗</span>
-                            <span class="skill-name">Comforting Embrace</span>
-                            <span class="skill-desc">Damage + Heal Relationship</span>
-                        </button>
-                        <button class="skill-btn protector-skill" onclick="useSkill('reassurance', 'protector')">
-                            <span class="skill-icon">💬</span>
-                            <span class="skill-name">Words of Reassurance</span>
-                            <span class="skill-desc">Strong vs Doubt Dragon</span>
-                        </button>
-                        <button class="skill-btn protector-skill" onclick="useSkill('surprise', 'protector')">
-                            <span class="skill-icon">🎁</span>
-                            <span class="skill-name">Surprise Gift</span>
-                            <span class="skill-desc">Skip Enemy Turn</span>
-                        </button>
-                    </div>
-                </div>
+            <!-- ACTION CONTROLS: Big, simple attack buttons for a more action-focused feel -->
+            <div class="big-attack-panel">
+                <button class="big-attack-btn protector" onclick="useSkill('embrace','protector')">
+                    <div class="big-icon">🤗</div>
+                    <div class="big-label">Protector</div>
+                </button>
 
-                <div class="actions-row">
-                    <h3>The Heroine's Skills:</h3>
-                    <div class="skills-grid">
-                        <button class="skill-btn heroine-skill" onclick="useSkill('smile', 'heroine')">
-                            <span class="skill-icon">😊</span>
-                            <span class="skill-name">Beaming Smile</span>
-                            <span class="skill-desc">Damage + Charm</span>
-                        </button>
-                        <button class="skill-btn heroine-skill" onclick="useSkill('communication', 'heroine')">
-                            <span class="skill-icon">🗣️</span>
-                            <span class="skill-name">Open Communication</span>
-                            <span class="skill-desc">Strong vs Misunderstanding</span>
-                        </button>
-                        <button class="skill-btn heroine-skill" onclick="useSkill('gesture', 'heroine')">
-                            <span class="skill-icon">💝</span>
-                            <span class="skill-name">Thoughtful Gesture</span>
-                            <span class="skill-desc">Reduce Next Damage</span>
-                        </button>
-                    </div>
-                </div>
+                <button class="big-attack-btn heroine" onclick="useSkill('smile','heroine')">
+                    <div class="big-icon">😊</div>
+                    <div class="big-label">Heroine</div>
+                </button>
             </div>
 
             <!-- BATTLE LOG -->

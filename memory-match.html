@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Memory Match - Mobile Legends Valentine Edition</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a14 0%, #1a0f2e 100%);
+            color: #e0e0e0;
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .memory-container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(10, 10, 20, 0.8);
+            border: 2px solid #FFD700;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+        }
+
+        .memory-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .memory-header h1 {
+            font-size: 36px;
+            color: #FFD700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+            margin-bottom: 10px;
+        }
+
+        .memory-header p {
+            color: #FF6B9D;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 215, 0, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #aaa;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            color: #FFD700;
+            font-weight: bold;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-bottom: 30px;
+            min-height: 400px;
+        }
+
+        .card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #FF1744, #FF6B9D);
+            border: 3px solid #FFD700;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            transition: all 0.3s;
+            transform-style: preserve-3d;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover:not(.flipped):not(.matched) {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 107, 157, 0.5);
+        }
+
+        .card.flipped {
+            background: #1a1a2e;
+            border-color: #FFD700;
+        }
+
+        .card.matched {
+            background: rgba(255, 215, 0, 0.1);
+            border-color: #FFD700;
+            opacity: 0.7;
+            cursor: default;
+        }
+
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+            border-radius: 9px;
+        }
+
+        .card-back {
+            font-size: 40px;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .game-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 14px;
+            font-weight: bold;
+            border: 2px solid #FFD700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #FF1744, #FF6B9D);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #FF6B9D, #FF1744);
+            box-shadow: 0 0 20px rgba(255, 107, 157, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 215, 0, 0.1);
+            color: #FFD700;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 215, 0, 0.2);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .message {
+            text-align: center;
+            padding: 20px;
+            margin: 20px 0;
+            background: rgba(255, 215, 0, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            color: #FFD700;
+            font-weight: bold;
+            font-size: 14px;
+            display: none;
+        }
+
+        .message.show {
+            display: block;
+            animation: slideIn 0.3s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 600px) {
+            .memory-container {
+                padding: 20px;
+            }
+
+            .memory-header h1 {
+                font-size: 28px;
+            }
+
+            .game-board {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+
+            .card {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="memory-container">
+        <div class="memory-header">
+            <h1>🃏 LOVE MEMORY MATCH 🃏</h1>
+            <p>Recall the beautiful moments we shared together</p>
+        </div>
+
+        <div class="game-stats">
+            <div class="stat">
+                <div class="stat-label">Moves</div>
+                <div class="stat-value" id="moves-count">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Matches</div>
+                <div class="stat-value" id="matches-count">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Time</div>
+                <div class="stat-value" id="time-count">0s</div>
+            </div>
+        </div>
+
+        <div class="message" id="message"></div>
+
+        <div class="game-board" id="game-board"></div>
+
+        <div class="game-controls">
+            <button class="btn btn-secondary" onclick="resetGame()">🔄 New Game</button>
+            <a href="valentine.html" class="btn btn-primary">← Back to Profile</a>
+        </div>
+    </div>
+
+    <script src="memory-match.js"></script>
+</body>
+</html>
