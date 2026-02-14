@@ -856,13 +856,20 @@ body {
 }
 
 /* ===== RESPONSIVE ===== */
+
+/* Tablet (768px and below) */
 @media (max-width: 768px) {
     .battle-container {
         padding: 10px;
+        max-width: 95%;
     }
 
     .battle-header h1 {
         font-size: 24px;
+    }
+
+    .battle-header p {
+        font-size: 14px;
     }
 
     .boss-info {
@@ -890,6 +897,282 @@ body {
     .gameover-container {
         padding: 20px;
         margin: 10px;
+        max-width: 90%;
+    }
+
+    .big-attack-panel {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .big-attack-btn {
+        width: 150px;
+        height: 150px;
+    }
+
+    .big-icon {
+        font-size: 40px;
+    }
+
+    .narration-box {
+        font-size: 12px;
+        padding: 6px 8px;
+    }
+
+    .battle-area {
+        gap: 15px;
+    }
+
+    .battle-arena-display {
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+}
+
+/* Mobile phones (480px and below) */
+@media (max-width: 480px) {
+    * {
+        font-size: 13px;
+    }
+
+    body {
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    .battle-container {
+        padding: 8px;
+        max-width: 100%;
+        gap: 10px;
+        border-radius: 10px;
+    }
+
+    .screen.active {
+        padding: 0;
+    }
+
+    .battle-header {
+        padding: 12px;
+        margin-bottom: 5px;
+        border-bottom: 2px solid rgba(255, 23, 68, 0.3);
+    }
+
+    .battle-header h1 {
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+
+    .battle-header p {
+        font-size: 12px;
+    }
+
+    .round-counter {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    /* Battle area adjustments */
+    .battle-area {
+        gap: 10px;
+        flex-direction: column;
+    }
+
+    .relationship-section {
+        padding: 15px;
+        margin: 0;
+    }
+
+    .health-bar-title {
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .health-bar {
+        height: 25px;
+    }
+
+    .health-text {
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    /* Battle arena display */
+    .battle-arena-display {
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .heroes-battle-section,
+    .boss-battle-section {
+        flex: 1 1 45%;
+        min-width: 150px;
+        padding: 5px;
+    }
+
+    .hero-battle-icon {
+        font-size: 70px;
+    }
+
+    .hero-battle-name {
+        font-size: 14px;
+    }
+
+    .vs-divider {
+        font-size: 18px;
+        margin: 5px 0;
+    }
+
+    .boss-battle-name {
+        font-size: 16px;
+    }
+
+    .boss-battle-desc {
+        font-size: 11px;
+    }
+
+    .narration-box {
+        font-size: 11px;
+        padding: 6px;
+        margin: 5px 0;
+    }
+
+    #narration-text {
+        line-height: 1.4;
+    }
+
+    /* Attack buttons */
+    .big-attack-panel {
+        flex-direction: column;
+        gap: 10px;
+        margin: 10px 0 5px 0;
+    }
+
+    .big-attack-btn {
+        width: 120px;
+        height: 120px;
+        border-radius: 12px;
+    }
+
+    .big-icon {
+        font-size: 32px;
+        margin-bottom: 4px;
+    }
+
+    .big-label {
+        font-size: 11px;
+    }
+
+    /* Battle log */
+    .battle-log {
+        font-size: 11px;
+        max-height: 100px;
+        overflow-y: auto;
+        padding: 8px;
+    }
+
+    .log-entry {
+        font-size: 10px;
+        margin: 2px 0;
+    }
+
+    /* Victory/Gameover containers */
+    .victory-container,
+    .gameover-container {
+        padding: 16px;
+        margin: 10px auto;
+        max-width: 95%;
+        border-radius: 15px;
+    }
+
+    .victory-title {
+        font-size: 22px;
+        margin-bottom: 10px;
+    }
+
+    .victory-message h2 {
+        font-size: 16px;
+        margin-bottom: 8px;
+    }
+
+    .victory-message p {
+        font-size: 13px;
+        line-height: 1.4;
+    }
+
+    .gameover-title {
+        font-size: 28px;
+        margin-bottom: 12px;
+    }
+
+    .gameover-message {
+        font-size: 14px;
+        line-height: 1.4;
+        margin-bottom: 20px;
+    }
+
+    .retry-btn {
+        padding: 10px 20px;
+        font-size: 13px;
+        margin: 6px 4px;
+        border-radius: 12px;
+    }
+
+    /* Reward display */
+    .rewards-display {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 12px !important;
+    }
+
+    .reward-item {
+        flex: 1 1 100%;
+        padding: 12px;
+    }
+
+    .reward-icon {
+        font-size: 32px;
+        margin-bottom: 6px;
+    }
+
+    .reward-title {
+        font-size: 12px;
+    }
+}
+
+/* Very small phones (less than 380px) */
+@media (max-width: 380px) {
+    * {
+        font-size: 12px;
+    }
+
+    .battle-container {
+        padding: 6px;
+    }
+
+    .battle-header h1 {
+        font-size: 16px;
+    }
+
+    .big-attack-btn {
+        width: 100px;
+        height: 100px;
+    }
+
+    .big-icon {
+        font-size: 28px;
+    }
+
+    .hero-battle-icon {
+        font-size: 60px;
+    }
+
+    .victory-title {
+        font-size: 20px;
+    }
+
+    .gameover-title {
+        font-size: 24px;
     }
 }
 

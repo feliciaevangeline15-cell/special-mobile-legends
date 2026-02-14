@@ -768,35 +768,334 @@ body {
 }
 
 /* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .loading-container {
-        flex-direction: column;
-        gap: 20px;
+        gap: 30px;
     }
 
     .splash-art-frame {
-        width: 300px;
-        height: 400px;
+        width: 280px;
+        height: 380px;
     }
 
     .game-title {
-        font-size: 32px;
+        font-size: 36px;
+    }
+
+    .profile-card {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .loading-container {
+        flex-direction: column;
+        gap: 20px;
+        padding: 15px;
+    }
+
+    .splash-art-frame {
+        width: 260px;
+        height: 350px;
+    }
+
+    .game-title {
+        font-size: 28px;
+        line-height: 1.3;
     }
 
     .profile-card {
         grid-template-columns: 1fr;
+        padding: 20px;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
     }
 
     .skills-grid {
         grid-template-columns: 1fr;
+        gap: 15px;
     }
 
     .stats-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
     }
 
     .modal-content {
         width: 90%;
         padding: 25px;
+        margin: 20px;
+    }
+
+    .claim-button {
+        padding: 10px 30px;
+        font-size: 14px;
+        margin-top: 15px;
+    }
+
+    .btn-primary,
+    .btn-large {
+        padding: 12px 24px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    * {
+        font-size: 13px;
+    }
+
+    body {
+        padding: 8px;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    .screen {
+        padding: 10px;
+    }
+
+    .loading-container {
+        flex-direction: column;
+        gap: 15px;
+        padding: 10px;
+        align-items: center;
+    }
+
+    .splash-art-frame {
+        width: 220px;
+        height: 280px;
+        border-radius: 12px;
+    }
+
+    .game-title {
+        font-size: 22px;
+        line-height: 1.3;
+        text-align: center;
+    }
+
+    .valentine-text {
+        font-size: 16px;
+    }
+
+    .loading-bar-container {
+        width: 90%;
+        margin-top: 20px;
+    }
+
+    .loading-bar {
+        height: 12px;
+        border-radius: 8px;
+    }
+
+    .loading-text {
+        font-size: 12px;
+        margin-top: 8px;
+    }
+
+    .enter-button {
+        padding: 12px 24px !important;
+        font-size: 13px !important;
+        margin-top: 20px !important;
+        width: 90%;
+    }
+
+    /* Profile page adjustments */
+    .profile-card {
+        grid-template-columns: 1fr;
+        padding: 15px;
+        margin: 10px auto;
+        max-width: 95%;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .profile-avatar {
+        width: 80px;
+        height: 80px;
+        font-size: 40px;
+    }
+
+    .profile-name {
+        font-size: 18px;
+    }
+
+    .profile-role {
+        font-size: 12px;
+    }
+
+    .skill-item,
+    .stat-item {
+        padding: 12px;
+        font-size: 12px;
+    }
+
+    .skill-icon,
+    .stat-icon {
+        font-size: 28px;
+    }
+
+    .skill-name,
+    .stat-name {
+        font-size: 13px;
+    }
+
+    .skill-desc,
+    .stat-value {
+        font-size: 11px;
+    }
+
+    .skills-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 15px;
+        margin: 10px auto;
+        border-radius: 12px;
+    }
+
+    .modal-content h2 {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    .modal-content p {
+        font-size: 12px;
+        line-height: 1.4;
+    }
+
+    .claim-button {
+        padding: 10px 20px;
+        font-size: 12px;
+        margin-top: 12px;
+        width: 90%;
+    }
+
+    .btn-primary,
+    .btn-large,
+    .btn-secondary {
+        padding: 10px 20px;
+        font-size: 13px;
+        margin: 6px;
+        border-radius: 10px;
+    }
+
+    /* Header and navigation */
+    header {
+        padding: 12px;
+    }
+
+    header h1 {
+        font-size: 20px;
+    }
+
+    header p {
+        font-size: 12px;
+    }
+
+    /* Memory match game adjustments */
+    .memory-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .memory-card {
+        padding: 20px;
+        font-size: 32px;
+        border-radius: 8px;
+    }
+
+    /* Archery game adjustments */
+    .archery-container {
+        padding: 10px;
+    }
+
+    .target {
+        width: 150px;
+        height: 150px;
+        margin: 10px auto;
+    }
+
+    .archery-controls {
+        gap: 10px;
+    }
+
+    .control-btn {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 380px) {
+    * {
+        font-size: 12px;
+    }
+
+    .splash-art-frame {
+        width: 180px;
+        height: 240px;
+    }
+
+    .game-title {
+        font-size: 18px;
+    }
+
+    .valentine-text {
+        font-size: 13px;
+    }
+
+    .profile-avatar {
+        width: 70px;
+        height: 70px;
+        font-size: 35px;
+    }
+
+    .profile-name {
+        font-size: 16px;
+    }
+
+    .skills-grid {
+        gap: 8px;
+    }
+
+    .stats-grid {
+        gap: 8px;
+    }
+
+    .memory-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+    }
+
+    .memory-card {
+        padding: 15px;
+        font-size: 28px;
     }
 }
