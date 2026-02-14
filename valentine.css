@@ -1,3 +1,69 @@
+    .profile-card {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        box-sizing: border-box !important;
+        padding: 12px !important;
+        margin: 10px auto !important;
+        max-width: 98vw !important;
+        overflow: hidden !important;
+    }
+    .profile-header {
+        width: 100%;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        gap: 8px !important;
+        margin-bottom: 8px !important;
+        box-sizing: border-box !important;
+    }
+    .profile-avatar {
+        width: 70px !important;
+        height: 70px !important;
+        font-size: 36px !important;
+        margin: 0 auto 2px auto !important;
+        display: block !important;
+    }
+    .profile-name {
+        font-size: 15px !important;
+        word-break: break-word !important;
+        max-width: 90vw !important;
+        margin: 0 auto 2px auto !important;
+    }
+    .level-bond-box {
+        width: 100%;
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        margin: 0 auto 6px auto !important;
+        box-sizing: border-box !important;
+    }
+    .level-box, .bond-box {
+        min-width: 40px !important;
+        min-height: 40px !important;
+        border-radius: 8px !important;
+        font-size: 13px !important;
+        padding: 2px !important;
+    }
+    /* Skill tree header spacing */
+    .skill-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 10px !important;
+        margin-bottom: 24px !important;
+        padding-bottom: 10px !important;
+    }
+    .skill-header h2 {
+        margin-bottom: 0 !important;
+    }
+    .back-btn {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
 /* ===== GENERAL STYLES ===== */
 * {
     margin: 0;
