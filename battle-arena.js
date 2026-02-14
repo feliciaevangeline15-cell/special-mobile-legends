@@ -109,6 +109,7 @@ function useSkill(skillType, character) {
             damage = 15;
             healAmount = 5;
             narration = '🛡️ The Protector gives a Comforting Embrace, damaging the enemy and healing the relationship!';
+            playAttackAnimation('protector');
         } else if (skillType === 'reassurance') {
             if (boss.id === 1) {
                 damage = 35; // Extra damage vs Doubtful Dragon
@@ -117,17 +118,20 @@ function useSkill(skillType, character) {
                 damage = 20;
                 narration = '💬 The Protector speaks words of reassurance, weakening the enemy!';
             }
+            playAttackAnimation('protector');
         } else if (skillType === 'surprise') {
             damage = 10;
             healAmount = 3;
             battleState.protectorBuff = 'skip';
             narration = '🎁 Surprise Gift! The enemy loses their next turn!';
+            playAttackAnimation('protector');
         }
     } else if (character === 'heroine') {
         if (skillType === 'smile') {
             damage = 18;
             healAmount = 3;
             narration = '✨ The Heroine\'s Beaming Smile charms the enemy and strengthens the bond!';
+            playAttackAnimation('heroine');
         } else if (skillType === 'communication') {
             if (boss.id === 0) {
                 damage = 40; // Extra damage vs Misunderstanding Monster
@@ -136,11 +140,13 @@ function useSkill(skillType, character) {
                 damage = 22;
                 narration = '🗣️ The Heroine opens the channels of communication!';
             }
+            playAttackAnimation('heroine');
         } else if (skillType === 'gesture') {
             damage = 8;
             healAmount = 5;
             battleState.heroineBuff = 'shield';
             narration = '💝 A Thoughtful Gesture reduces the next incoming damage!';
+            playAttackAnimation('heroine');
         }
     }
     
@@ -153,6 +159,12 @@ function useSkill(skillType, character) {
         battleState.relationshipHp = Math.min(battleState.relationshipHp + healAmount, battleState.relationshipMaxHp);
     }
     
+    // Show damage popup
+    showDamageNumber(damage);
+    
+    // Screen shake on hit
+    screenShakeEffect();
+    
     addLog(narration, character);
     updateUI();
     
@@ -160,7 +172,7 @@ function useSkill(skillType, character) {
     if (battleState.bossHp <= 0) {
         setTimeout(() => {
             showVictory();
-        }, 1000);
+        }, 1500);
         return;
     }
     
@@ -211,13 +223,22 @@ function enemyTurn() {
     
     battleState.relationshipHp -= damage;
     
+    // Show damage popup
+    showDamageNumber(damage, true);
+    
+    // Screen shake on hit
+    screenShakeEffect();
+    
+    // Boss attack animation
+    playBossAttackAnimation();
+    
     addLog(narration, 'boss');
     
     if (battleState.relationshipHp <= 0) {
         battleState.relationshipHp = 0;
         setTimeout(() => {
             showGameOver();
-        }, 1000);
+        }, 1500);
         return;
     }
     
@@ -327,6 +348,63 @@ function retryBattle() {
     
     enableAllSkills();
     updateUI();
+}
+
+// ===== ANIMATION EFFECTS =====
+function playAttackAnimation(character) {
+    const iconId = character === 'protector' ? 'protector-icon' : 'heroine-icon';
+    const icon = document.getElementById(iconId);
+    
+    icon.classList.remove('icon-attack-left', 'icon-attack-right');
+    
+    // Force reflow to restart animation
+    void icon.offsetWidth;
+    
+    if (character === 'protector') {
+        icon.classList.add('icon-attack-left');
+    } else {
+        icon.classList.add('icon-attack-right');
+    }
+}
+
+function playBossAttackAnimation() {
+    const bossIcon = document.getElementById('boss-icon');
+    bossIcon.classList.remove('icon-hit');
+    
+    // Force reflow
+    void bossIcon.offsetWidth;
+    
+    bossIcon.classList.add('icon-hit');
+}
+
+function screenShakeEffect() {
+    const battleArena = document.querySelector('.battle-arena-display');
+    battleArena.classList.remove('screen-shake');
+    
+    // Force reflow
+    void battleArena.offsetWidth;
+    
+    battleArena.classList.add('screen-shake');
+}
+
+function showDamageNumber(damage, isBossDamage = false) {
+    const effectLayer = document.getElementById('effect-layer');
+    const damageText = document.createElement('div');
+    
+    damageText.className = 'damage-text';
+    damageText.textContent = isBossDamage ? `💔 -${damage}` : `💢 ${damage}!`;
+    damageText.style.color = isBossDamage ? '#FF1744' : '#FFD700';
+    
+    // Position randomly in the effect layer
+    damageText.style.left = (Math.random() * 80 + 10) + '%';
+    damageText.style.top = (Math.random() * 60 + 20) + '%';
+    
+    effectLayer.appendChild(damageText);
+    
+    // Remove after animation
+    setTimeout(() => {
+        damageText.remove();
+    }, 1000);
 }
 
 // ===== NAVIGATION =====

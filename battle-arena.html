@@ -33,42 +33,53 @@
                     </div>
                 </div>
 
-                <!-- HEROES SECTION -->
-                <div class="heroes-section">
-                    <!-- PLAYER (PROTECTOR) -->
-                    <div class="hero-card player-card animate__animated animate__fadeInLeft">
-                        <div class="hero-icon">🛡️</div>
-                        <div class="hero-name">The Protector</div>
-                        <div class="hero-description">You</div>
+                <!-- BATTLE ARENA -->
+                <div class="battle-arena-display">
+                    <!-- LEFT SIDE: HEROES -->
+                    <div class="heroes-battle-section">
+                        <!-- PLAYER (PROTECTOR) -->
+                        <div class="hero-battle-card player-battle">
+                            <div class="hero-battle-icon" id="protector-icon">🛡️</div>
+                            <div class="hero-battle-name">The Protector</div>
+                            <div class="hero-battle-hp-bar">
+                                <div class="hero-hp-fill" id="protector-hp-fill" style="width: 100%;"></div>
+                            </div>
+                            <div class="hero-battle-hp-text">You: Ready</div>
+                            <div class="hero-status" id="protector-status"></div>
+                        </div>
+
+                        <!-- HEROINE -->
+                        <div class="hero-battle-card heroine-battle">
+                            <div class="hero-battle-icon" id="heroine-icon">✨</div>
+                            <div class="hero-battle-name">The Heroine</div>
+                            <div class="hero-battle-hp-bar">
+                                <div class="hero-hp-fill" id="heroine-hp-fill" style="width: 100%;"></div>
+                            </div>
+                            <div class="hero-battle-hp-text">Her: Ready</div>
+                            <div class="hero-status" id="heroine-status"></div>
+                        </div>
                     </div>
 
-                    <!-- VS -->
-                    <div class="vs-text">VS</div>
+                    <!-- VS CENTER -->
+                    <div class="vs-divider">VS</div>
 
-                    <!-- HEROINE -->
-                    <div class="hero-card heroine-card animate__animated animate__fadeInRight">
-                        <div class="hero-icon">✨</div>
-                        <div class="hero-name">The Heroine</div>
-                        <div class="hero-description">Her</div>
-                    </div>
-                </div>
-
-                <!-- BOSS SECTION -->
-                <div class="boss-section">
-                    <div class="boss-info">
-                        <div class="boss-icon" id="boss-icon">👹</div>
-                        <div class="boss-details">
-                            <h2 id="boss-name">The Misunderstanding Monster</h2>
-                            <p id="boss-description">A creature born from miscommunication and misunderstanding.</p>
-                            <div class="boss-hp-bar">
-                                <div class="boss-hp-fill" id="boss-health" style="width: 100%;"></div>
-                            </div>
-                            <div class="boss-hp-text">
-                                Boss HP: <span id="boss-hp">50</span> / <span id="boss-max-hp">50</span>
-                            </div>
+                    <!-- RIGHT SIDE: BOSS -->
+                    <div class="boss-battle-section">
+                        <div class="boss-battle-icon" id="boss-icon">👹</div>
+                        <h2 id="boss-name" class="boss-battle-name">The Misunderstanding Monster</h2>
+                        <p id="boss-description" class="boss-battle-desc">A creature born from miscommunication and misunderstanding.</p>
+                        
+                        <div class="boss-hp-bar-battle">
+                            <div class="boss-hp-fill" id="boss-health" style="width: 100%;"></div>
+                        </div>
+                        <div class="boss-hp-text-battle">
+                            Boss HP: <span id="boss-hp">50</span> / <span id="boss-max-hp">50</span>
                         </div>
                     </div>
                 </div>
+
+                <!-- EFFECT LAYERS (for attack animations) -->
+                <div class="effect-layer" id="effect-layer"></div>
             </div>
 
             <!-- NARRATION SECTION -->
