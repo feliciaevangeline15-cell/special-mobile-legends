@@ -244,8 +244,8 @@
 <body>
     <div class="hero-select-container animate__animated animate__fadeIn">
         <div class="select-header">
-            <h1>⚔️ CHOOSE YOUR HERO ⚔️</h1>
-            <p>Select your champion to enter the battle arena and strengthen your bond</p>
+            <h1>⚔️ CHOOSE YOUR HEROES ⚔️</h1>
+            <p>Select both champions to enter the battle arena together and strengthen your bond</p>
         </div>
 
         <div class="heroes-grid">
@@ -303,7 +303,7 @@
         </div>
 
         <div class="status-text" id="status-text">
-            ✓ Hero selected! Ready to enter the arena.
+            ✓ Both heroes selected! Ready to enter the arena together.
         </div>
 
         <div class="controls">
@@ -315,27 +315,36 @@
     </div>
 
     <script>
-        let selectedHero = null;
+        let selectedHeroes = [];
 
         function selectHero(hero) {
-            // Remove previous selection
-            document.querySelectorAll('.hero-card').forEach(card => {
-                card.classList.remove('selected');
-            });
+            const heroCard = event.currentTarget;
+            
+            // Toggle selection
+            if (selectedHeroes.includes(hero)) {
+                selectedHeroes = selectedHeroes.filter(h => h !== hero);
+                heroCard.classList.remove('selected');
+            } else {
+                selectedHeroes.push(hero);
+                heroCard.classList.add('selected');
+            }
 
-            // Add selection to clicked hero
-            event.currentTarget.classList.add('selected');
-            selectedHero = hero;
-
-            // Show status and enable button
-            document.getElementById('status-text').classList.add('show');
-            document.getElementById('start-battle-btn').disabled = false;
+            // Check if both heroes are selected
+            const isReadyForBattle = selectedHeroes.length === 2;
+            
+            if (isReadyForBattle) {
+                document.getElementById('status-text').classList.add('show');
+                document.getElementById('start-battle-btn').disabled = false;
+            } else {
+                document.getElementById('status-text').classList.remove('show');
+                document.getElementById('start-battle-btn').disabled = true;
+            }
         }
 
         function startBattle() {
-            if (selectedHero) {
-                // Redirect to battle arena with selected hero
-                window.location.href = `battle-arena.html?hero=${selectedHero}`;
+            if (selectedHeroes.length === 2) {
+                // Redirect to battle arena with both heroes selected
+                window.location.href = `battle-arena.html?heroes=${selectedHeroes.join(',')}`;
             }
         }
     </script>
