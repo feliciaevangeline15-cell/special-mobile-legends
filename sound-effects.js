@@ -111,8 +111,13 @@ function playSuccessSound() {
     }
 }
 
-// Add click sound to all buttons automatically
+// Add click sound to all buttons automatically - ONLY on battle arena
 function setupSoundEffects() {
+    // Only setup on battle arena pages
+    if (!window.location.pathname.includes('battle-arena')) {
+        return;
+    }
+    
     // Use capture phase to intercept clicks before they reach handlers
     document.addEventListener('click', function(event) {
         const target = event.target;

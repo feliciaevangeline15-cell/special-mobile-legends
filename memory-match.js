@@ -57,9 +57,6 @@ function flipCard(index, cardEl) {
     if (gameState.flipped.length >= 2) return;
     if (cardEl.classList.contains('flipped') || cardEl.classList.contains('matched')) return;
     
-    // Play click sound for card flip
-    playClickSound();
-    
     // Flip card
     cardEl.classList.add('flipped');
     const card = gameState.cards[index];
