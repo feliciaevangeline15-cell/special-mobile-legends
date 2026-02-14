@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Legends: Valentine Edition</title>
+    <link rel="stylesheet" href="valentine.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+</head>
+<body>
+    <!-- LOADING SCREEN / LANDING PAGE -->
+    <div id="loading-screen" class="screen active">
+        <div class="loading-container">
+            <div class="splash-art-frame">
+                <img src="https://via.placeholder.com/800x600?text=COUPLE+PHOTO" alt="Couple" class="splash-image">
+                <div class="splash-overlay"></div>
+            </div>
+            
+            <div class="loading-content">
+                <h1 class="game-title animate__animated animate__fadeInDown">
+                    MOBILE LEGENDS
+                    <br>
+                    <span class="valentine-text">♡ VALENTINE EDITION ♡</span>
+                </h1>
+                
+                <div class="loading-bar-container">
+                    <div class="loading-bar">
+                        <div class="loading-progress"></div>
+                    </div>
+                    <p class="loading-text">Downloading Love Resources...</p>
+                </div>
+                
+                <button id="enter-btn" class="enter-button" style="opacity: 0;">
+                    ENTER THE LAND OF LOVE
+                </button>
+            </div>
+        </div>
+        <audio id="welcome-sound" preload="auto"></audio>
+    </div>
+
+    <!-- PROFILE PAGE -->
+    <div id="profile-screen" class="screen">
+        <div class="profile-container">
+            <header class="profile-header">
+                <button class="back-btn" onclick="goToLoading()">← BACK</button>
+                <h2>USER PROFILE</h2>
+                <div class="profile-rank-badge">ETERNAL SOULMATE</div>
+            </header>
+
+            <div class="profile-content">
+                <!-- PROFILE CARD -->
+                <div class="profile-card animate__animated animate__zoomIn">
+                    <div class="profile-photo-container">
+                        <img src="https://via.placeholder.com/300x300?text=YOUR+PHOTO" alt="Your Photo" class="profile-photo">
+                        <div class="charisma-badge">+9999<br>CHARISMA</div>
+                    </div>
+                    
+                    <div class="profile-info">
+                        <h3 class="player-name" id="player-name">Valentine Love Story</h3>
+                        <p class="user-id">USER ID: ETERNAL-2026</p>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-label">Win Rate</div>
+                                <div class="stat-value">100%</div>
+                                <div class="stat-description">Always winning against problems</div>
+                            </div>
+                            
+                            <div class="stat-item">
+                                <div class="stat-label">Favorite Hero</div>
+                                <div class="stat-icon">💑</div>
+                                <div class="stat-description">Main protector since [Date]</div>
+                            </div>
+                            
+                            <div class="stat-item">
+                                <div class="stat-label">Current Rank</div>
+                                <div class="stat-value">ETERNAL</div>
+                                <div class="stat-description">Highest rank possible</div>
+                            </div>
+                            
+                            <div class="stat-item">
+                                <div class="stat-label">Loyalty Points</div>
+                                <div class="stat-value">∞</div>
+                                <div class="stat-description">Forever and always</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACHIEVEMENTS -->
+                <div class="achievements-section">
+                    <h3>Achievements Unlocked</h3>
+                    <div class="achievements-grid">
+                        <div class="achievement-badge" title="Met the one">💫</div>
+                        <div class="achievement-badge" title="First kiss">💋</div>
+                        <div class="achievement-badge" title="Together forever">💍</div>
+                        <div class="achievement-badge" title="Love is stronger">💪</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SKILL TREE BUTTON -->
+            <button class="navigate-btn" onclick="goToSkillTree()">
+                → ENTER SKILL TREE
+            </button>
+        </div>
+    </div>
+
+    <!-- SKILL TREE PAGE -->
+    <div id="skill-tree-screen" class="screen">
+        <div class="skill-tree-container">
+            <header class="skill-header">
+                <button class="back-btn" onclick="goToProfile()">← BACK</button>
+                <h2>THE SKILL TREE</h2>
+            </header>
+
+            <div class="skill-content">
+                <p class="skill-intro">Click the skills below to unlock memories and promises</p>
+                
+                <div class="skills-grid">
+                    <!-- SKILL 1: First Encounter -->
+                    <div class="skill-card animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
+                        <div class="skill-icon first-encounter" onclick="openSkillModal(1)">
+                            👀
+                        </div>
+                        <h4>First Encounter</h4>
+                        <p>The moment everything began</p>
+                    </div>
+
+                    <!-- SKILL 2: Ultimate Bond -->
+                    <div class="skill-card animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+                        <div class="skill-icon ultimate-bond" onclick="openSkillModal(2)">
+                            💕
+                        </div>
+                        <h4>Ultimate Bond</h4>
+                        <p>Our favorite memories together</p>
+                    </div>
+
+                    <!-- SKILL 3: Passive Buff -->
+                    <div class="skill-card animate__animated animate__fadeInUp" style="animation-delay: 0.3s;">
+                        <div class="skill-icon passive-buff" onclick="openSkillModal(3)">
+                            ✨
+                        </div>
+                        <h4>Unconditional Buff</h4>
+                        <p>Sweet promises for our future</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NAVIGATION BUTTONS -->
+            <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin-top: 20px;">
+                <button class="navigate-btn" onclick="goToGacha()">
+                    → OPEN VALENTINE'S CHEST
+                </button>
+                <button class="navigate-btn" onclick="gotoArena()" style="background: linear-gradient(135deg, rgba(255,23,68,0.3), rgba(255,107,157,0.3)); border-color: #FF6B9D;">
+                    ⚔️ ENTER BATTLE ARENA
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GACHA PAGE -->
+    <div id="gacha-screen" class="screen">
+        <div class="gacha-container">
+            <header class="gacha-header">
+                <button class="back-btn" onclick="goToSkillTree()">← BACK</button>
+                <h2>VALENTINE'S CHEST</h2>
+                <p class="gacha-subtitle">Pull for special rewards!</p>
+            </header>
+
+            <div class="gacha-content">
+                <div class="chest-area">
+                    <div class="chest-image" id="chest-image">
+                        <div class="chest-idle">💎</div>
+                    </div>
+                </div>
+
+                <div class="pull-info">
+                    <p>You have <span id="pull-count">3</span> pulls remaining</p>
+                    <p class="pull-note">(Resets every day)</p>
+                </div>
+
+                <button class="pull-button" id="pull-btn" onclick="openChest()">
+                    PULL THE CHEST
+                </button>
+
+                <div id="reward-display" class="reward-display hidden">
+                    <div class="reward-card animate__animated animate__bounceIn">
+                        <div class="reward-icon" id="reward-icon">🎁</div>
+                        <div class="reward-title" id="reward-title">Loading...</div>
+                        <div class="reward-description" id="reward-description"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PREVIOUS REWARDS -->
+            <div class="previous-rewards">
+                <h4>Your Previous Pulls</h4>
+                <div id="rewards-history" class="rewards-history">
+                    <p style="color: #aaa; text-align: center;">No pulls yet. Time to get lucky!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SKILL MODAL -->
+    <div id="skill-modal" class="modal hidden">
+        <div class="modal-content animate__animated animate__zoomIn">
+            <button class="modal-close" onclick="closeSkillModal()">✕</button>
+            <div class="modal-body" id="modal-body">
+                <!-- Dynamic content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- REWARD MODAL -->
+    <div id="reward-modal" class="modal hidden">
+        <div class="modal-content animate__animated animate__zoomIn">
+            <button class="modal-close" onclick="closeRewardModal()">✕</button>
+            <div class="modal-body reward-modal-body" id="reward-modal-body">
+                <!-- Dynamic content -->
+            </div>
+        </div>
+    </div>
+
+    <script src="valentine.js"></script>
+</body>
+</html>

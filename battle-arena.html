@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Grand Love Arena</title>
+    <link rel="stylesheet" href="battle-arena.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+</head>
+<body>
+    <!-- BATTLE SCREEN -->
+    <div id="battle-screen" class="screen active">
+        <div class="battle-container">
+            <!-- HEADER -->
+            <header class="battle-header">
+                <h1>The Grand Love Arena</h1>
+                <p class="battle-subtitle" id="battle-subtitle">Face: The Misunderstanding Monster</p>
+                <div class="round-counter">Round <span id="current-round">1</span> / 3</div>
+            </header>
+
+            <!-- MAIN BATTLE AREA -->
+            <div class="battle-area">
+                <!-- RELATIONSHIP HEALTH BAR (CENTER) -->
+                <div class="relationship-section">
+                    <div class="health-bar-title">💕 OUR RELATIONSHIP HEALTH 💕</div>
+                    <div class="health-bar-container">
+                        <div class="health-bar">
+                            <div class="health-fill" id="relationship-health" style="width: 100%;"></div>
+                        </div>
+                        <div class="health-text">
+                            <span id="relationship-hp">100</span> / <span id="relationship-max-hp">100</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HEROES SECTION -->
+                <div class="heroes-section">
+                    <!-- PLAYER (PROTECTOR) -->
+                    <div class="hero-card player-card animate__animated animate__fadeInLeft">
+                        <div class="hero-icon">🛡️</div>
+                        <div class="hero-name">The Protector</div>
+                        <div class="hero-description">You</div>
+                    </div>
+
+                    <!-- VS -->
+                    <div class="vs-text">VS</div>
+
+                    <!-- HEROINE -->
+                    <div class="hero-card heroine-card animate__animated animate__fadeInRight">
+                        <div class="hero-icon">✨</div>
+                        <div class="hero-name">The Heroine</div>
+                        <div class="hero-description">Her</div>
+                    </div>
+                </div>
+
+                <!-- BOSS SECTION -->
+                <div class="boss-section">
+                    <div class="boss-info">
+                        <div class="boss-icon" id="boss-icon">👹</div>
+                        <div class="boss-details">
+                            <h2 id="boss-name">The Misunderstanding Monster</h2>
+                            <p id="boss-description">A creature born from miscommunication and misunderstanding.</p>
+                            <div class="boss-hp-bar">
+                                <div class="boss-hp-fill" id="boss-health" style="width: 100%;"></div>
+                            </div>
+                            <div class="boss-hp-text">
+                                Boss HP: <span id="boss-hp">50</span> / <span id="boss-max-hp">50</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NARRATION SECTION -->
+            <div class="narration-box" id="narration-box">
+                <p id="narration-text">The Misunderstanding Monster appears! It thrives on the lack of communication between lovers. Will you overcome this challenge together?</p>
+            </div>
+
+            <!-- ACTION BUTTONS SECTION -->
+            <div class="actions-section">
+                <div class="actions-row">
+                    <h3>The Protector's Skills:</h3>
+                    <div class="skills-grid">
+                        <button class="skill-btn protector-skill" onclick="useSkill('embrace', 'protector')">
+                            <span class="skill-icon">🤗</span>
+                            <span class="skill-name">Comforting Embrace</span>
+                            <span class="skill-desc">Damage + Heal Relationship</span>
+                        </button>
+                        <button class="skill-btn protector-skill" onclick="useSkill('reassurance', 'protector')">
+                            <span class="skill-icon">💬</span>
+                            <span class="skill-name">Words of Reassurance</span>
+                            <span class="skill-desc">Strong vs Doubt Dragon</span>
+                        </button>
+                        <button class="skill-btn protector-skill" onclick="useSkill('surprise', 'protector')">
+                            <span class="skill-icon">🎁</span>
+                            <span class="skill-name">Surprise Gift</span>
+                            <span class="skill-desc">Skip Enemy Turn</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="actions-row">
+                    <h3>The Heroine's Skills:</h3>
+                    <div class="skills-grid">
+                        <button class="skill-btn heroine-skill" onclick="useSkill('smile', 'heroine')">
+                            <span class="skill-icon">😊</span>
+                            <span class="skill-name">Beaming Smile</span>
+                            <span class="skill-desc">Damage + Charm</span>
+                        </button>
+                        <button class="skill-btn heroine-skill" onclick="useSkill('communication', 'heroine')">
+                            <span class="skill-icon">🗣️</span>
+                            <span class="skill-name">Open Communication</span>
+                            <span class="skill-desc">Strong vs Misunderstanding</span>
+                        </button>
+                        <button class="skill-btn heroine-skill" onclick="useSkill('gesture', 'heroine')">
+                            <span class="skill-icon">💝</span>
+                            <span class="skill-name">Thoughtful Gesture</span>
+                            <span class="skill-desc">Reduce Next Damage</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BATTLE LOG -->
+            <div class="battle-log" id="battle-log">
+                <!-- Log entries will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- VICTORY SCREEN -->
+    <div id="victory-screen" class="screen">
+        <div class="victory-container animate__animated animate__zoomIn">
+            <div class="victory-title">⭐ ETERNAL LOVE TRIUMPH ⭐</div>
+            <div class="victory-message">
+                <h2>You've Overcome the Challenge!</h2>
+                <p>Together, you've defeated the darkness and strengthened your bond!</p>
+            </div>
+
+            <div class="rewards-display">
+                <div class="reward-item animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+                    <div class="reward-icon">✨</div>
+                    <div class="reward-title">Permanent Relationship Buff</div>
+                    <div class="reward-desc">Happiness +20 | Commitment +20</div>
+                </div>
+
+                <div class="reward-item animate__animated animate__fadeInUp" style="animation-delay: 0.4s;">
+                    <div class="reward-icon">💎</div>
+                    <div class="reward-title">Legendary Love Treasure</div>
+                    <div class="reward-desc">A message from your beloved awaits...</div>
+                </div>
+
+                <div class="reward-item animate__animated animate__fadeInUp" style="animation-delay: 0.6s;">
+                    <div class="reward-icon">🗺️</div>
+                    <div class="reward-title">New Journey Unlocked</div>
+                    <div class="reward-desc">Plan your next adventure together!</div>
+                </div>
+            </div>
+
+            <!-- LOVE MESSAGE MODAL -->
+            <div id="love-message-modal" class="modal hidden">
+                <div class="modal-content animate__animated animate__bounceIn">
+                    <button class="modal-close" onclick="closeLoveMessage()">✕</button>
+                    <div class="love-letter">
+                        <h2>💌 A Message for You</h2>
+                        <p id="love-message-text">
+                            "In the darkest moments of doubt and misunderstanding, what matters most is that we face it together. 
+                            You are my strength, my reason to believe in forever. Thank you for fighting for us. I love you more each day. ♡"
+                        </p>
+                        <p class="love-signature">With all my love,<br>Forever Yours 💕</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="victory-buttons">
+                <button class="victory-btn" onclick="showLoveMessage()">💌 Read Love Letter</button>
+                <button class="victory-btn" onclick="nextBattle()">⚔️ Face Next Challenge</button>
+                <button class="victory-btn" onclick="goToHome()">🏠 Return Home</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GAME OVER SCREEN (if relationship dies) -->
+    <div id="gameover-screen" class="screen">
+        <div class="gameover-container animate__animated animate__shakeX">
+            <div class="gameover-title">⚠️ RELATIONSHIP OVERWHELMED ⚠️</div>
+            <p class="gameover-message">
+                The relationship health was overcome by the challenge. But don't worry! 
+                Every relationship needs work. Try again and show more love! 💕
+            </p>
+            <button class="retry-btn" onclick="retryBattle()">🔄 Try Again</button>
+            <button class="retry-btn" onclick="goToHome()">🏠 Return Home</button>
+        </div>
+    </div>
+
+    <script src="battle-arena.js"></script>
+</body>
+</html>

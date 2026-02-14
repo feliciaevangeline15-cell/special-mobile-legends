@@ -71,13 +71,11 @@ function cacheDOM() {
     dom.modalMessage = document.getElementById('modal-message');
 }
 
-// ===== SCREEN SWITCHING =====
 function switchScreen(screenName) {
     Object.values(dom.screens).forEach(s => s.classList.remove('active'));
     dom.screens[screenName].classList.add('active');
 }
 
-// ===== HERO SELECTION =====
 function selectHero(heroType) {
     gameState.selectedHero = heroType;
     const hero = heroes[heroType];
@@ -89,7 +87,6 @@ function selectHero(heroType) {
     switchScreen('game');
 }
 
-// ===== GAME START =====
 function startGame() {
     if (!gameState.selectedHero) {
         showAlert('No Hero', 'Please choose a hero first!');
@@ -146,7 +143,6 @@ function endGame() {
     showResults();
 }
 
-// ===== BATTLE RENDERING =====
 function renderBattle() {
     dom.gameArea.innerHTML = '';
     
@@ -158,25 +154,20 @@ function renderBattle() {
         <style>
             @keyframes attackLeft { 0% { transform: translateX(0); } 50% { transform: translateX(30px); } 100% { transform: translateX(0); } }
             @keyframes attackRight { 0% { transform: translateX(0); } 50% { transform: translateX(-30px); } 100% { transform: translateX(0); } }
-            @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
             @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
             
             .player-avatar { animation: ${gameState.playerAttacking ? 'attackLeft 0.4s' : 'none'}; }
             .enemy-avatar { animation: ${gameState.enemyAttacking ? 'attackRight 0.4s' : 'none'}; }
-            .hit-text { animation: bounce 0.5s ease-in; font-weight: bold; }
         </style>
         
         <div style="display: flex; flex-direction: column; height: 100%; padding: 20px; gap: 15px; justify-content: space-between;">
             
-            <!-- BATTLE TITLE -->
             <div style="text-align: center; font-size: 24px; font-weight: bold; color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);">
                 ARENA BATTLE
             </div>
             
-            <!-- HERO vs ENEMY -->
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; flex: 1; align-items: center;">
                 
-                <!-- PLAYER HERO -->
                 <div style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 215, 0, 0.05)); border: 2px solid #ffd700; border-radius: 15px; padding: 25px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 15px;">
                     <div class="player-avatar" style="font-size: 120px; line-height: 1; filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5)); transition: transform 0.4s;">
                         ${hero.icon}
@@ -190,7 +181,6 @@ function renderBattle() {
                         </div>
                     </div>
                     
-                    <!-- HP BAR PLAYER -->
                     <div style="width: 100%; background: #0a0a0a; border: 2px solid #ff6b6b; border-radius: 10px; padding: 3px; overflow: hidden;">
                         <div style="width: ${playerHpPercent}%; height: 20px; background: linear-gradient(90deg, #ff6b6b, #ff8e8e); border-radius: 6px; transition: width 0.3s ease;"></div>
                     </div>
@@ -199,10 +189,9 @@ function renderBattle() {
                     </div>
                 </div>
                 
-                <!-- ENEMY HERO -->
                 <div style="background: linear-gradient(135deg, rgba(255, 107, 107, 0.15), rgba(255, 107, 107, 0.05)); border: 2px solid #ff6b6b; border-radius: 15px; padding: 25px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 15px;">
                     <div class="enemy-avatar" style="font-size: 120px; line-height: 1; filter: drop-shadow(0 0 5px rgba(255, 107, 107, 0.5)); transform: scaleX(-1); transition: transform 0.4s;">
-                        
+                        🧟
                     </div>
                     <div>
                         <div style="font-size: 22px; font-weight: bold; color: #ff6b6b;">
@@ -213,7 +202,6 @@ function renderBattle() {
                         </div>
                     </div>
                     
-                    <!-- HP BAR ENEMY -->
                     <div style="width: 100%; background: #0a0a0a; border: 2px solid #6B9EFF; border-radius: 10px; padding: 3px; overflow: hidden;">
                         <div style="width: ${enemyHpPercent}%; height: 20px; background: linear-gradient(90deg, #6B9EFF, #9EBFFF); border-radius: 6px; transition: width 0.3s ease;"></div>
                     </div>
@@ -223,12 +211,10 @@ function renderBattle() {
                 </div>
             </div>
             
-            <!-- BATTLE LOG -->
             <div id="battle-log" style="background: rgba(0, 0, 0, 0.7); border: 1px solid #444; border-radius: 10px; padding: 12px; max-height: 70px; overflow-y: auto; font-size: 12px; color: #aaa; line-height: 1.4;">
                 ${gameState.battleLog.slice(-3).map(log => `<div style="color: #ffd700;">* ${log}</div>`).join('')}
             </div>
             
-            <!-- ACTION BUTTONS -->
             <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
                 <button id="attack-btn" style="padding: 18px 70px; background: linear-gradient(135deg, #ff3333, #ff6b6b); color: white; border: 3px solid #ff0000; border-radius: 12px; font-weight: bold; font-size: 18px; cursor: pointer; box-shadow: 0 5px 20px rgba(255, 51, 51, 0.4); transition: all 0.2s; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">
                     ATTACK
@@ -242,32 +228,38 @@ function renderBattle() {
     
     dom.gameArea.innerHTML = battleHTML;
     
-    // Attach button listeners
     const attackBtn = document.getElementById('attack-btn');
     const defendBtn = document.getElementById('defend-btn');
     
-    if (attackBtn) attackBtn.addEventListener('click', playerAttack);
-    if (defendBtn) defendBtn.addEventListener('click', playerDefend);
-    
-    // Hover effects
-    [attackBtn, defendBtn].forEach(btn => {
-        if (!btn) return;
-        btn.addEventListener('mouseover', (e) => {
+    if (attackBtn) {
+        attackBtn.addEventListener('click', playerAttack);
+        attackBtn.addEventListener('mouseover', (e) => {
             if (gameState.gameRunning) {
                 e.target.style.transform = 'scale(1.08)';
                 e.target.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.5)';
             }
         });
-        btn.addEventListener('mouseout', (e) => {
+        attackBtn.addEventListener('mouseout', (e) => {
             e.target.style.transform = 'scale(1)';
-            e.target.style.boxShadow = e.target.id === 'attack-btn' 
-                ? '0 5px 20px rgba(255, 51, 51, 0.4)' 
-                : '0 5px 20px rgba(74, 144, 226, 0.4)';
+            e.target.style.boxShadow = '0 5px 20px rgba(255, 51, 51, 0.4)';
         });
-    });
+    }
+    
+    if (defendBtn) {
+        defendBtn.addEventListener('click', playerDefend);
+        defendBtn.addEventListener('mouseover', (e) => {
+            if (gameState.gameRunning) {
+                e.target.style.transform = 'scale(1.08)';
+                e.target.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.5)';
+            }
+        });
+        defendBtn.addEventListener('mouseout', (e) => {
+            e.target.style.transform = 'scale(1)';
+            e.target.style.boxShadow = '0 5px 20px rgba(74, 144, 226, 0.4)';
+        });
+    }
 }
 
-// ===== COMBAT SYSTEM =====
 function playerAttack() {
     if (!gameState.gameRunning || gameState.playerAttacking) return;
     
@@ -383,18 +375,19 @@ function screenShake() {
     }, 10);
 }
 
-// ===== UI UPDATES =====
 function updateUI() {
+    if (!dom.playerHp) return;
     dom.playerHp.textContent = Math.max(0, gameState.playerHp);
     dom.playerMana.textContent = gameState.playerMana;
     dom.score.textContent = gameState.score;
     dom.heroLevelMini.textContent = 'Kills: ' + gameState.kills;
     
     const hpPercent = (gameState.playerHp / gameState.playerMaxHp) * 100;
-    dom.playerHpFill.style.width = hpPercent + '%';
+    if (dom.playerHpFill) dom.playerHpFill.style.width = hpPercent + '%';
 }
 
 function updateTimer() {
+    if (!dom.timer) return;
     const mins = Math.floor(gameState.gameTime / 60);
     const secs = gameState.gameTime % 60;
     dom.timer.textContent = mins + ':' + String(secs).padStart(2, '0');
@@ -406,7 +399,6 @@ function updateTimer() {
     }
 }
 
-// ===== RESULTS =====
 function showResults() {
     const hero = heroes[gameState.selectedHero];
     const isVictory = gameState.kills >= 5;
@@ -428,7 +420,6 @@ function showResults() {
     switchScreen('result');
 }
 
-// ===== AUDIO =====
 let audioContext = null;
 
 function getAudioContext() {
@@ -480,7 +471,6 @@ function toggleMusic() {
     btn.textContent = gameState.musicOn ? 'MUSIC ON' : 'MUSIC OFF';
 }
 
-// ===== MODAL ALERTS =====
 function showAlert(title, message) {
     if (!dom.modal) return;
     dom.modalHeader.textContent = title;
@@ -494,7 +484,6 @@ function closeModal() {
     }
 }
 
-// ===== NAVIGATION =====
 function goHome() {
     gameState.gameRunning = false;
     switchScreen('home');
@@ -504,7 +493,6 @@ function selectHeroScreen() {
     switchScreen('heroSelect');
 }
 
-// ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', () => {
     cacheDOM();
     
