@@ -3,9 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mobile Legends: Love Edition</title>
+    <title>Mobile Legends: Val's day Edition</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -1;
+            background: url('e3559c5492553b6b40ec05f3e7acb8d5.jpg') center/cover no-repeat;
+            filter: blur(12px) brightness(0.7);
+        }
         * {
             margin: 0;
             padding: 0;
@@ -165,12 +173,7 @@
         <h1>Mobile Legends: Love Edition</h1>
         <p class="subtitle">The Grand Love Arena</p>
         
-        <div class="description">
-            <p>Bersama orang terkasih, hadapi tantangan cinta dalam pertempuran epik!</p>
-            <p style="margin-top: 15px; font-size: 14px; color: #999;">
-                🎮 Pilih strategi, gunakan skill, dan kalahkan musuh bersama-sama! 🎮
-            </p>
-        </div>
+        <!-- Description removed as requested -->
 
         <div class="menu-buttons">
             <button class="btn btn-primary" onclick="goToBattle()">⚔️ MULAI BATTLE</button>
@@ -197,5 +200,6 @@
             window.location.href = 'valentine.html';
         }
     </script>
+    <script src="script.js"></script>
 </body>
 </html>

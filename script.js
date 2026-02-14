@@ -417,8 +417,21 @@ function showResults() {
     }
     document.getElementById('result-message').textContent = message;
     
+    document.body.classList.add('blurred-bg');
     switchScreen('result');
+    // Tambahkan efek blur/darken pada victory
+    if (isVictory) {
+        document.body.classList.add('blurred-bg');
+    } else {
+        document.body.classList.remove('blurred-bg');
+    }
 }
+
+// Remove blur/darken when leaving result screen
+function leaveResultScreen() {
+    document.body.classList.remove('blurred-bg');
+}
+
 
 let audioContext = null;
 
@@ -487,21 +500,29 @@ function closeModal() {
 function goHome() {
     gameState.gameRunning = false;
     switchScreen('home');
+    // Hapus efek blur/darken jika ada
+    document.body.classList.remove('blurred-bg');
 }
 
 function selectHeroScreen() {
     switchScreen('heroSelect');
+    // Hapus efek blur/darken jika ada
+    document.body.classList.remove('blurred-bg');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     cacheDOM();
     
     document.getElementById('playBtn').addEventListener('click', () => {
+        leaveResultScreen();
         switchScreen('heroSelect');
     });
     
     document.getElementById('musicToggle').addEventListener('click', toggleMusic);
-    dom.startBtn.addEventListener('click', startGame);
+    dom.startBtn.addEventListener('click', () => {
+        leaveResultScreen();
+        startGame();
+    });
     dom.pauseBtn.addEventListener('click', pauseGame);
     
     switchScreen('home');

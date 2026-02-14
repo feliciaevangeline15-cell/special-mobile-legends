@@ -46,7 +46,14 @@ function initBattle() {
     battleState.relationshipMaxHp = 100;
     battleState.battleLog = [];
     
-    loadLevel(1);
+    // Check for startLevel in URL to resume at a specific level
+    const urlParams = new URLSearchParams(window.location.search);
+    const startLevel = parseInt(urlParams.get('startLevel')) || 0;
+    if (startLevel && !isNaN(startLevel) && startLevel >= 1 && startLevel <= levelProgression.length) {
+        loadLevel(startLevel);
+    } else {
+        loadLevel(1);
+    }
     updateUI();
     enableAllSkills();
     addLog('🎮 Battle Start! Face Level ' + battleState.currentLevel, 'narration');
@@ -239,7 +246,9 @@ function enemyTurn() {
     
     if (enemyCount === 0) {
         battleState.currentTurn = 'player';
-        enableAllSkills();
+        setTimeout(() => {
+            enableAllSkills();
+        }, 500);
         return;
     }
     
@@ -324,15 +333,21 @@ function enableAllSkills() {
 function showVictory() {
     const levelData = levelProgression[battleState.currentLevel - 1];
     addLog(`🎉 Level ${battleState.currentLevel} (${levelData.name}) Defeated! Victory!`, 'narration');
-    
-    // Show victory screen
-    document.getElementById('battle-screen').classList.remove('active');
-    document.getElementById('victory-screen').classList.add('active');
+    // Redirect to separate victory page and pass current level as param
+    window.location.href = `victory.html?level=${battleState.currentLevel}`;
 }
+
+function leaveVictoryScreen() {
+    // Remove any global blur/darken class; victory screen now lives on a separate page
+    document.body.classList.remove('blurred-bg');
+}
+
 
 function showGameOver() {
     addLog('⚠️ The relationship was overwhelmed by the enemies...', 'narration');
     
+    // Blur & darken wallpaper
+    document.body.classList.add('blurred-bg');
     document.getElementById('battle-screen').classList.remove('active');
     document.getElementById('gameover-screen').classList.add('active');
 }
@@ -355,14 +370,12 @@ function closeLoveMessage() {
 }
 
 function nextBattle() {
+    leaveVictoryScreen();
     if (battleState.currentLevel < 5) {
         // Load next level
         battleState.relationshipHp = battleState.relationshipMaxHp;
         loadLevel(battleState.currentLevel + 1);
-        
-        document.getElementById('victory-screen').classList.remove('active');
         document.getElementById('battle-screen').classList.add('active');
-        
         enableAllSkills();
         updateUI();
     } else {
@@ -372,11 +385,13 @@ function nextBattle() {
 }
 
 function retryBattle() {
+    // Reset relationship HP
+    battleState.relationshipHp = battleState.relationshipMaxHp;
     loadLevel(battleState.currentLevel);
-    
     document.getElementById('gameover-screen').classList.remove('active');
     document.getElementById('battle-screen').classList.add('active');
-    
+    // Remove wallpaper blur/darken if any
+    document.body.classList.remove('blurred-bg');
     enableAllSkills();
     updateUI();
 }
@@ -385,26 +400,23 @@ function retryBattle() {
 function playAttackAnimation(character) {
     const iconId = character === 'protector' ? 'protector-icon' : 'heroine-icon';
     const icon = document.getElementById(iconId);
-    
     icon.classList.remove('icon-attack-left', 'icon-attack-right');
-    
-    // Force reflow to restart animation
     void icon.offsetWidth;
-    
     if (character === 'protector') {
         icon.classList.add('icon-attack-left');
+        addLog('Ayen menyerang demi Felis!', 'protector');
     } else {
         icon.classList.add('icon-attack-right');
+        addLog('Felis menyerang bersama Ayen!', 'heroine');
     }
 }
 
 function playBossAttackAnimation() {
     const bossIcon = document.getElementById('boss-icon');
+    if (!bossIcon) return; // Prevent error if boss-icon not found
     bossIcon.classList.remove('icon-hit');
-    
     // Force reflow
     void bossIcon.offsetWidth;
-    
     bossIcon.classList.add('icon-hit');
 }
 
@@ -441,6 +453,7 @@ function showDamageNumber(damage, isBossDamage = false) {
 // ===== NAVIGATION =====
 function goToHome() {
     // This will redirect back to home.html
+    leaveVictoryScreen();
     window.location.href = 'home.html';
 }
 

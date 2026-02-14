@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Victory - The Grand Love Arena</title>
+    <link rel="stylesheet" href="battle-arena.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        /* small overrides for the standalone victory page */
+        body { display:flex; align-items:center; justify-content:center; min-height:100vh; }
+        .victory-container { max-width:900px; padding:30px; text-align:center; color:#fff; }
+        .victory-title { font-size:28px; color:#ffd700; margin-bottom:12px; }
+        .victory-message h2 { margin: 8px 0; }
+        .victory-buttons { display:flex; gap:12px; justify-content:center; margin-top:18px; flex-wrap:wrap; }
+        .victory-btn { padding:12px 18px; border-radius:8px; border:none; cursor:pointer; background:linear-gradient(45deg,#ff6b6b,#ff8e8e); color:#fff; }
+        .modal { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.6); }
+        .modal.hidden { display:none; }
+        .modal-content { background:#111; padding:20px; border-radius:10px; max-width:720px; color:#eee; }
+    </style>
+</head>
+<body style="background: linear-gradient(135deg, rgba(10,10,20,0.85), rgba(10,0,30,0.85)), url('e3559c5492553b6b40ec05f3e7acb8d5.jpg') center/cover;">
+    <div class="victory-container animate__animated animate__zoomIn">
+        <div class="victory-title">⭐ ETERNAL LOVE TRIUMPH ⭐</div>
+        <div class="victory-message">
+            <h2>You've Overcome the Challenge!</h2>
+            <p>Together, you've defeated the darkness and strengthened your bond!</p>
+        </div>
+
+        <div class="rewards-display" style="display:flex; gap:14px; justify-content:center; margin-top:16px; flex-wrap:wrap;">
+            <div class="reward-item">
+                <div class="reward-icon">✨</div>
+                <div class="reward-title">Permanent Relationship Buff</div>
+            </div>
+            <div class="reward-item">
+                <div class="reward-icon">💎</div>
+                <div class="reward-title">Legendary Love Treasure</div>
+            </div>
+            <div class="reward-item">
+                <div class="reward-icon">🗺️</div>
+                <div class="reward-title">New Journey Unlocked</div>
+            </div>
+        </div>
+
+        <!-- LOVE MESSAGE MODAL -->
+        <div id="love-message-modal" class="modal hidden">
+            <div class="modal-content animate__animated animate__bounceIn">
+                <button class="modal-close" onclick="closeLoveMessage()" style="float:right; background:none; border:none; color:#fff; font-size:18px;">✕</button>
+                <div class="love-letter">
+                    <h2>💌 A Message for You</h2>
+                    <p id="love-message-text">Loading...</p>
+                    <p class="love-signature">With all my love,<br>Forever Yours 💕</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="victory-buttons">
+            <button class="victory-btn" id="read-letter">💌 Read Love Letter</button>
+            <button class="victory-btn" id="next-challenge">⚔️ Face Next Challenge</button>
+            <button class="victory-btn" id="return-home">🏠 Return Home</button>
+        </div>
+    </div>
+
+    <script src="victory.js"></script>
+</body>
+</html>

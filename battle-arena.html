@@ -9,7 +9,7 @@
 </head>
 <body>
     <!-- BATTLE SCREEN -->
-    <div id="battle-screen" class="screen">
+    <div id="battle-screen" class="screen active">
         <div class="battle-container">
             <!-- HEADER -->
             <header class="battle-header">
@@ -39,8 +39,8 @@
                     <div class="heroes-battle-section">
                         <!-- PLAYER (PROTECTOR) -->
                         <div class="hero-battle-card player-battle">
-                            <div class="hero-battle-icon" id="protector-icon">🛡️</div>
-                            <div class="hero-battle-name">The Protector</div>
+                            <div class="hero-battle-icon" id="protector-icon">🧑‍🦱</div>
+                            <div class="hero-battle-name">Ayen</div>
                             <div class="hero-battle-hp-bar">
                                 <div class="hero-hp-fill" id="protector-hp-fill" style="width: 100%;"></div>
                             </div>
@@ -50,8 +50,8 @@
 
                         <!-- HEROINE -->
                         <div class="hero-battle-card heroine-battle">
-                            <div class="hero-battle-icon" id="heroine-icon">✨</div>
-                            <div class="hero-battle-name">The Heroine</div>
+                            <div class="hero-battle-icon" id="heroine-icon">👩‍🦰</div>
+                            <div class="hero-battle-name">Felis</div>
                             <div class="hero-battle-hp-bar">
                                 <div class="hero-hp-fill" id="heroine-hp-fill" style="width: 100%;"></div>
                             </div>
@@ -141,58 +141,6 @@
         </div>
     </div>
 
-    <!-- VICTORY SCREEN -->
-    <div id="victory-screen" class="screen">
-        <div class="victory-container animate__animated animate__zoomIn">
-            <div class="victory-title">⭐ ETERNAL LOVE TRIUMPH ⭐</div>
-            <div class="victory-message">
-                <h2>You've Overcome the Challenge!</h2>
-                <p>Together, you've defeated the darkness and strengthened your bond!</p>
-            </div>
-
-            <div class="rewards-display">
-                <div class="reward-item animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
-                    <div class="reward-icon">✨</div>
-                    <div class="reward-title">Permanent Relationship Buff</div>
-                    <div class="reward-desc">Happiness +20 | Commitment +20</div>
-                </div>
-
-                <div class="reward-item animate__animated animate__fadeInUp" style="animation-delay: 0.4s;">
-                    <div class="reward-icon">💎</div>
-                    <div class="reward-title">Legendary Love Treasure</div>
-                    <div class="reward-desc">A message from your beloved awaits...</div>
-                </div>
-
-                <div class="reward-item animate__animated animate__fadeInUp" style="animation-delay: 0.6s;">
-                    <div class="reward-icon">🗺️</div>
-                    <div class="reward-title">New Journey Unlocked</div>
-                    <div class="reward-desc">Plan your next adventure together!</div>
-                </div>
-            </div>
-
-            <!-- LOVE MESSAGE MODAL -->
-            <div id="love-message-modal" class="modal hidden">
-                <div class="modal-content animate__animated animate__bounceIn">
-                    <button class="modal-close" onclick="closeLoveMessage()">✕</button>
-                    <div class="love-letter">
-                        <h2>💌 A Message for You</h2>
-                        <p id="love-message-text">
-                            "In the darkest moments of doubt and misunderstanding, what matters most is that we face it together. 
-                            You are my strength, my reason to believe in forever. Thank you for fighting for us. I love you more each day. ♡"
-                        </p>
-                        <p class="love-signature">With all my love,<br>Forever Yours 💕</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="victory-buttons">
-                <button class="victory-btn" onclick="showLoveMessage()">💌 Read Love Letter</button>
-                <button class="victory-btn" onclick="nextBattle()">⚔️ Face Next Challenge</button>
-                <button class="victory-btn" onclick="goToHome()">🏠 Return Home</button>
-            </div>
-        </div>
-    </div>
-
     <!-- GAME OVER SCREEN (if relationship dies) -->
     <div id="gameover-screen" class="screen">
         <div class="gameover-container animate__animated animate__shakeX">
@@ -205,7 +153,7 @@
             <button class="retry-btn" onclick="goToHome()">🏠 Return Home</button>
         </div>
     </div>
-
     <script src="battle-arena.js"></script>
+</div>
 </body>
 </html>

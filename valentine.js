@@ -10,7 +10,7 @@ const gachaRewards = [
     {
         icon: '🍽️',
         title: 'Romantic Dinner Voucher',
-        description: 'A voucher for a romantic dinner at your favorite restaurant. Let\'s create more memories together! 💑',
+        description: 'A voucher for a romantic dinner at your favorite restaurant. Let\'s create more memories together! 🤤',
         rarity: 'rare'
     },
     {
