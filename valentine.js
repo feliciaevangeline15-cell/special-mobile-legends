@@ -153,6 +153,10 @@ function gotoArena() {
     window.location.href = 'battle-arena.html';
 }
 
+function goToHome() {
+    window.location.href = 'home.html';
+}
+
 function switchScreen(screenName) {
     document.querySelectorAll('.screen').forEach(s => {
         s.classList.remove('active');

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Legends: Love Edition</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF1744;
+            --secondary: #FFD700;
+            --dark: #0a0a14;
+            --accent: #FF6B9D;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a14 0%, #1a0f2e 100%);
+            background-image: url('e3559c5492553b6b40ec05f3e7acb8d5.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-blend-mode: overlay;
+            color: #e0e0e0;
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px;
+            max-width: 600px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h1 {
+            font-size: 48px;
+            color: var(--secondary);
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            margin-bottom: 20px;
+            animation: bounce 1s ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .subtitle {
+            font-size: 20px;
+            color: var(--accent);
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+        }
+
+        .game-icon {
+            font-size: 120px;
+            margin-bottom: 30px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .description {
+            font-size: 16px;
+            color: #bbb;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary), #FF6B9D);
+            color: white;
+            box-shadow: 0 0 20px rgba(255, 23, 68, 0.5);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(255, 23, 68, 0.8);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, var(--secondary), #FFE082);
+            color: #000;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+        }
+
+        .info-section {
+            background: rgba(255, 23, 68, 0.1);
+            border: 2px solid rgba(255, 23, 68, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 40px;
+            text-align: left;
+        }
+
+        .info-section h3 {
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .info-section ul {
+            list-style: none;
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        .info-section li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .info-section li:before {
+            content: "💕";
+            position: absolute;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="game-icon">💕⚔️</div>
+        <h1>Mobile Legends: Love Edition</h1>
+        <p class="subtitle">The Grand Love Arena</p>
+        
+        <div class="description">
+            <p>Bersama orang terkasih, hadapi tantangan cinta dalam pertempuran epik!</p>
+            <p style="margin-top: 15px; font-size: 14px; color: #999;">
+                🎮 Pilih strategi, gunakan skill, dan kalahkan musuh bersama-sama! 🎮
+            </p>
+        </div>
+
+        <div class="menu-buttons">
+            <button class="btn btn-primary" onclick="goToBattle()">⚔️ MULAI BATTLE</button>
+            <button class="btn btn-secondary" onclick="goToProfile()">👥 LIHAT PROFILE</button>
+        </div>
+
+        <div class="info-section">
+            <h3>📖 Cara Bermain:</h3>
+            <ul>
+                <li>Level 1-5 dengan kesulitan yang meningkat</li>
+                <li>Setiap level ada lebih banyak musuh</li>
+                <li>Gunakan skill strategis untuk menang</li>
+                <li>Kalahkan semua level untuk mendapatkan victory! 🏆</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function goToBattle() {
+            window.location.href = 'battle-arena.html';
+        }
+
+        function goToProfile() {
+            window.location.href = 'valentine.html';
+        }
+    </script>
+</body>
+</html>

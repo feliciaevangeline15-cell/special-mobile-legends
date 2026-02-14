@@ -48,6 +48,7 @@ function initBattle() {
     
     loadLevel(1);
     updateUI();
+    enableAllSkills();
     addLog('🎮 Battle Start! Face Level ' + battleState.currentLevel, 'narration');
 }
 
@@ -439,8 +440,8 @@ function showDamageNumber(damage, isBossDamage = false) {
 
 // ===== NAVIGATION =====
 function goToHome() {
-    // This will redirect back to valentine.html
-    window.location.href = 'valentine.html';
+    // This will redirect back to home.html
+    window.location.href = 'home.html';
 }
 
 // ===== INITIALIZATION =====
