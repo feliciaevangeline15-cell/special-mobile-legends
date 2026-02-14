@@ -1,14 +1,15 @@
 // ===== GAME STATE =====
 const battleState = {
     currentRound: 1,
-    totalRounds: 3,
+    totalRounds: 5,
+    currentLevel: 1,
     relationshipHp: 100,
     relationshipMaxHp: 100,
     
-    // Boss data
-    currentBoss: 0,
-    bossHp: 0,
-    bossMaxHp: 0,
+    // Enemy wave system
+    enemies: [],
+    totalEnemyHp: 0,
+    totalMaxEnemyHp: 0,
     
     // Turn tracking
     currentTurn: 'player',
@@ -19,78 +20,96 @@ const battleState = {
     battleLog: []
 };
 
-// ===== BOSSES DATA =====
-const bosses = [
-    {
-        id: 0,
-        name: 'The Misunderstanding Monster',
-        icon: '👹',
-        description: 'A creature born from miscommunication and misunderstanding.',
-        maxHp: 50,
-        color: '#FF6B6B',
-        narration: {
-            appeared: 'The Misunderstanding Monster appears! It thrives on the lack of communication between lovers. Will you overcome this challenge together?',
-            defeated: 'The monster dissolves as your words of love cut through the confusion. Communication is the key!'
-        }
-    },
-    {
-        id: 1,
-        name: 'The Doubtful Dragon',
-        icon: '🐉',
-        description: 'A powerful dragon fueled by fears and insecurity. Doubt tries to tear you apart.',
-        maxHp: 75,
-        color: '#FF8C42',
-        narration: {
-            appeared: 'The Doubtful Dragon emerges! It whispers of fears and insecurities. Trust is your greatest weapon!',
-            defeated: 'The dragon fades away. Your trust in each other is unbreakable!'
-        }
-    },
-    {
-        id: 2,
-        name: 'The Routine Tyrant',
-        icon: '👑',
-        description: 'The final boss. Represents the monotony that can dull even the brightest love.',
-        maxHp: 100,
-        color: '#9C27B0',
-        narration: {
-            appeared: 'The Routine Tyrant rises! It tries to make love ordinary and boring. Surprise and creativity are your allies!',
-            defeated: 'The Tyrant crumbles! Your love will never be routine—it\'s always magical!'
-        }
-    }
+// ===== ENEMY TYPES =====
+const enemyTypes = [
+    { name: 'Confusion Sprite', icon: '👻', baseHp: 20, baseDmg: 8 },
+    { name: 'Doubt Wraith', icon: '💀', baseHp: 25, baseDmg: 10 },
+    { name: 'Misery Shade', icon: '👹', baseHp: 30, baseDmg: 12 },
+    { name: 'Sadness Ghost', icon: '😢', baseHp: 22, baseDmg: 9 },
+    { name: 'Despair Phantom', icon: '🌑', baseHp: 35, baseDmg: 14 }
+];
+
+// ===== LEVEL PROGRESSION DATA =====
+const levelProgression = [
+    { level: 1, enemyCount: 2, hpMultiplier: 1.0, dmgMultiplier: 1.0, name: 'Beginner' },
+    { level: 2, enemyCount: 3, hpMultiplier: 1.2, dmgMultiplier: 1.1, name: 'Intermediate' },
+    { level: 3, enemyCount: 3, hpMultiplier: 1.5, dmgMultiplier: 1.3, name: 'Advanced' },
+    { level: 4, enemyCount: 4, hpMultiplier: 1.8, dmgMultiplier: 1.5, name: 'Expert' },
+    { level: 5, enemyCount: 5, hpMultiplier: 2.2, dmgMultiplier: 1.8, name: 'Legendary' }
 ];
 
 // ===== INITIALIZE GAME =====
 function initBattle() {
     battleState.currentRound = 1;
+    battleState.currentLevel = 1;
     battleState.relationshipHp = 100;
     battleState.relationshipMaxHp = 100;
-    battleState.currentBoss = 0;
     battleState.battleLog = [];
     
-    loadBoss(0);
+    loadLevel(1);
     updateUI();
-    addLog('Battle Start! Face: ' + bosses[0].name, 'narration');
+    addLog('🎮 Battle Start! Face Level ' + battleState.currentLevel, 'narration');
 }
 
-function loadBoss(bossIndex) {
-    const boss = bosses[bossIndex];
-    battleState.currentBoss = bossIndex;
-    battleState.bossHp = boss.maxHp;
-    battleState.bossMaxHp = boss.maxHp;
+function loadLevel(levelNum) {
+    const levelData = levelProgression[levelNum - 1];
+    battleState.currentLevel = levelNum;
     battleState.currentTurn = 'player';
     battleState.protectorBuff = null;
     battleState.heroineBuff = null;
     
-    document.getElementById('boss-icon').textContent = boss.icon;
-    document.getElementById('boss-name').textContent = boss.name;
-    document.getElementById('boss-description').textContent = boss.description;
-    document.getElementById('boss-hp').textContent = boss.maxHp;
-    document.getElementById('boss-max-hp').textContent = boss.maxHp;
-    document.getElementById('battle-subtitle').textContent = 'Face: ' + boss.name;
-    document.getElementById('current-round').textContent = bossIndex + 1;
-    document.getElementById('narration-text').textContent = boss.narration.appeared;
+    // Generate enemies for this level
+    battleState.enemies = [];
+    let totalHp = 0;
     
+    for (let i = 0; i < levelData.enemyCount; i++) {
+        const enemyType = enemyTypes[Math.floor(Math.random() * enemyTypes.length)];
+        const hp = Math.ceil(enemyType.baseHp * levelData.hpMultiplier);
+        const dmg = Math.ceil(enemyType.baseDmg * levelData.dmgMultiplier);
+        
+        battleState.enemies.push({
+            id: i,
+            name: enemyType.name,
+            icon: enemyType.icon,
+            maxHp: hp,
+            hp: hp,
+            damage: dmg,
+            defeated: false
+        });
+        
+        totalHp += hp;
+    }
+    
+    battleState.totalEnemyHp = totalHp;
+    battleState.totalMaxEnemyHp = totalHp;
+    
+    // Update UI
+    document.getElementById('boss-name').textContent = `Level ${levelNum} - ${levelData.name}`;
+    document.getElementById('boss-description').textContent = `${levelData.enemyCount} enemies ahead! Enemies grow stronger with each level.`;
+    document.getElementById('boss-hp').textContent = Math.ceil(battleState.totalEnemyHp);
+    document.getElementById('boss-max-hp').textContent = battleState.totalMaxEnemyHp;
+    document.getElementById('current-round').textContent = levelNum;
+    document.getElementById('battle-subtitle').textContent = `Level ${levelNum} - ${levelData.name} Mode`;
+    document.getElementById('narration-text').textContent = `⚔️ Level ${levelNum} begins! ${levelData.enemyCount} enemies appear! Can you overcome this challenge?`;
+    
+    renderEnemies();
     updateUI();
+}
+
+function renderEnemies() {
+    const container = document.getElementById('enemies-container');
+    container.innerHTML = '';
+    
+    battleState.enemies.forEach(enemy => {
+        const card = document.createElement('div');
+        card.className = `enemy-card ${enemy.defeated ? 'defeated' : ''}`;
+        card.innerHTML = `
+            <div class="enemy-icon">${enemy.icon}</div>
+            <div class="enemy-name">${enemy.name}</div>
+            <div class="enemy-hp-small">${enemy.hp}/${enemy.maxHp}</div>
+        `;
+        container.appendChild(card);
+    });
 }
 
 // ===== SKILL USAGE =====
@@ -102,57 +121,65 @@ function useSkill(skillType, character) {
     let damage = 0;
     let healAmount = 0;
     let narration = '';
-    const boss = bosses[battleState.currentBoss];
     
     if (character === 'protector') {
         if (skillType === 'embrace') {
             damage = 15;
             healAmount = 5;
-            narration = '🛡️ The Protector gives a Comforting Embrace, damaging the enemy and healing the relationship!';
+            narration = '🛡️ The Protector gives a Comforting Embrace, hitting enemies and healing!';
             playAttackAnimation('protector');
         } else if (skillType === 'reassurance') {
-            if (boss.id === 1) {
-                damage = 35; // Extra damage vs Doubtful Dragon
-                narration = '💬 Words of Reassurance pierce through the doubt! Strong attack!';
-            } else {
-                damage = 20;
-                narration = '💬 The Protector speaks words of reassurance, weakening the enemy!';
-            }
+            damage = 25;
+            healAmount = 2;
+            narration = '💬 Words of Reassurance! A strong attack on all enemies!';
             playAttackAnimation('protector');
         } else if (skillType === 'surprise') {
             damage = 10;
             healAmount = 3;
             battleState.protectorBuff = 'skip';
-            narration = '🎁 Surprise Gift! The enemy loses their next turn!';
+            narration = '🎁 Surprise Gift! All enemies lose their next turn!';
             playAttackAnimation('protector');
         }
     } else if (character === 'heroine') {
         if (skillType === 'smile') {
             damage = 18;
             healAmount = 3;
-            narration = '✨ The Heroine\'s Beaming Smile charms the enemy and strengthens the bond!';
+            narration = '✨ The Heroine\'s Beaming Smile charms all enemies!';
             playAttackAnimation('heroine');
         } else if (skillType === 'communication') {
-            if (boss.id === 0) {
-                damage = 40; // Extra damage vs Misunderstanding Monster
-                narration = '🗣️ Open Communication destroys misunderstanding! Massive damage!';
-            } else {
-                damage = 22;
-                narration = '🗣️ The Heroine opens the channels of communication!';
-            }
+            damage = 28;
+            healAmount = 1;
+            narration = '🗣️ Open Communication! A powerful blast hits all enemies!';
             playAttackAnimation('heroine');
         } else if (skillType === 'gesture') {
             damage = 8;
             healAmount = 5;
             battleState.heroineBuff = 'shield';
-            narration = '💝 A Thoughtful Gesture reduces the next incoming damage!';
+            narration = '💝 A Thoughtful Gesture! Reduces incoming damage next turn!';
             playAttackAnimation('heroine');
         }
     }
     
-    // Apply damage
-    battleState.bossHp -= damage;
-    if (battleState.bossHp < 0) battleState.bossHp = 0;
+    // Apply damage to first alive enemy
+    let enemyHit = false;
+    for (let i = 0; i < battleState.enemies.length; i++) {
+        if (!battleState.enemies[i].defeated) {
+            battleState.enemies[i].hp -= damage;
+            if (battleState.enemies[i].hp < 0) battleState.enemies[i].hp = 0;
+            enemyHit = true;
+            
+            if (battleState.enemies[i].hp <= 0) {
+                battleState.enemies[i].defeated = true;
+                narration += ` ☠️ ${battleState.enemies[i].name} defeated!`;
+            }
+            break;
+        }
+    }
+    
+    // Calculate total remaining hp
+    let totalHp = 0;
+    battleState.enemies.forEach(e => totalHp += e.hp);
+    battleState.totalEnemyHp = totalHp;
     
     // Apply healing
     if (healAmount > 0) {
@@ -166,10 +193,11 @@ function useSkill(skillType, character) {
     screenShakeEffect();
     
     addLog(narration, character);
+    renderEnemies();
     updateUI();
     
     // Check victory
-    if (battleState.bossHp <= 0) {
+    if (battleState.totalEnemyHp <= 0) {
         setTimeout(() => {
             showVictory();
         }, 1500);
@@ -188,43 +216,45 @@ function enemyTurn() {
     // Check if enemy should skip (protector's surprise gift)
     if (battleState.protectorBuff === 'skip') {
         battleState.protectorBuff = null;
-        addLog('🎁 The enemy is distracted by the surprise and loses this turn!', 'boss');
+        addLog('🎁 All enemies are distracted and skip their turn!', 'boss');
         battleState.currentTurn = 'player';
         enableAllSkills();
         updateUI();
         return;
     }
     
-    const boss = bosses[battleState.currentBoss];
-    let damage = 0;
-    let narration = '';
+    // Calculate total damage from all alive enemies
+    let totalDamage = 0;
+    let narration = '🔥 ';
+    let enemyCount = 0;
     
-    // Boss attack logic based on type
-    if (boss.id === 0) {
-        // Misunderstanding Monster
-        narration = '👹 The Misunderstanding Monster spreads confusion!';
-        damage = Math.floor(Math.random() * 10) + 15;
-    } else if (boss.id === 1) {
-        // Doubtful Dragon
-        narration = '🐉 The Doubtful Dragon roars with uncertainty!';
-        damage = Math.floor(Math.random() * 15) + 18;
-    } else if (boss.id === 2) {
-        // Routine Tyrant
-        narration = '👑 The Routine Tyrant attacks with mundane monotony!';
-        damage = Math.floor(Math.random() * 18) + 20;
+    battleState.enemies.forEach(enemy => {
+        if (!enemy.defeated) {
+            totalDamage += enemy.damage;
+            narration += `${enemy.icon} `;
+            enemyCount++;
+        }
+    });
+    
+    if (enemyCount === 0) {
+        battleState.currentTurn = 'player';
+        enableAllSkills();
+        return;
     }
+    
+    narration += 'All enemies attack together!';
     
     // Apply shield if Heroine used Thoughtful Gesture
     if (battleState.heroineBuff === 'shield') {
-        damage = Math.floor(damage / 2);
-        narration += ' (But the thoughtful gesture reduces the damage!)';
+        totalDamage = Math.floor(totalDamage / 2);
+        narration += ' (Thoughtful Gesture reduces the damage!)';
         battleState.heroineBuff = null;
     }
     
-    battleState.relationshipHp -= damage;
+    battleState.relationshipHp -= totalDamage;
     
     // Show damage popup
-    showDamageNumber(damage, true);
+    showDamageNumber(totalDamage, true);
     
     // Screen shake on hit
     screenShakeEffect();
@@ -255,9 +285,9 @@ function updateUI() {
     document.getElementById('relationship-hp').textContent = Math.max(0, battleState.relationshipHp);
     document.getElementById('relationship-health').style.width = (battleState.relationshipHp / battleState.relationshipMaxHp * 100) + '%';
     
-    // Update boss health
-    document.getElementById('boss-hp').textContent = Math.max(0, battleState.bossHp);
-    document.getElementById('boss-health').style.width = (battleState.bossHp / battleState.bossMaxHp * 100) + '%';
+    // Update enemy health (total)
+    document.getElementById('boss-hp').textContent = Math.max(0, battleState.totalEnemyHp);
+    document.getElementById('boss-health').style.width = (battleState.totalEnemyHp / battleState.totalMaxEnemyHp * 100) + '%';
     
     // Update battle log
     const logDiv = document.getElementById('battle-log');
@@ -291,8 +321,8 @@ function enableAllSkills() {
 
 // ===== VICTORY & GAMEOVER =====
 function showVictory() {
-    const boss = bosses[battleState.currentBoss];
-    addLog('🎉 ' + boss.narration.defeated, 'narration');
+    const levelData = levelProgression[battleState.currentLevel - 1];
+    addLog(`🎉 Level ${battleState.currentLevel} (${levelData.name}) Defeated! Victory!`, 'narration');
     
     // Show victory screen
     document.getElementById('battle-screen').classList.remove('active');
@@ -300,7 +330,7 @@ function showVictory() {
 }
 
 function showGameOver() {
-    addLog('⚠️ The relationship was overwhelmed by the challenge...', 'narration');
+    addLog('⚠️ The relationship was overwhelmed by the enemies...', 'narration');
     
     document.getElementById('battle-screen').classList.remove('active');
     document.getElementById('gameover-screen').classList.add('active');
@@ -324,10 +354,10 @@ function closeLoveMessage() {
 }
 
 function nextBattle() {
-    if (battleState.currentBoss < 2) {
-        // Load next boss
+    if (battleState.currentLevel < 5) {
+        // Load next level
         battleState.relationshipHp = battleState.relationshipMaxHp;
-        loadBoss(battleState.currentBoss + 1);
+        loadLevel(battleState.currentLevel + 1);
         
         document.getElementById('victory-screen').classList.remove('active');
         document.getElementById('battle-screen').classList.add('active');
@@ -335,13 +365,13 @@ function nextBattle() {
         enableAllSkills();
         updateUI();
     } else {
-        // All battles won!
+        // All levels won!
         goToHome();
     }
 }
 
 function retryBattle() {
-    loadBoss(battleState.currentBoss);
+    loadLevel(battleState.currentLevel);
     
     document.getElementById('gameover-screen').classList.remove('active');
     document.getElementById('battle-screen').classList.add('active');
