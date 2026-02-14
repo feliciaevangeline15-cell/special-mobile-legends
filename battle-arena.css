@@ -803,21 +803,24 @@ body {
 
 /* ===== GAMEOVER SCREEN ===== */
 #gameover-screen {
+    background: linear-gradient(135deg, var(--darker) 0%, #1a0f2e 100%);
+    background-image: url('e3559c5492553b6b40ec05f3e7acb8d5.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     background-blend-mode: overlay;
 }
 
 .gameover-container {
     text-align: center;
-    background: rgba(10, 10, 20, 0.65);
+    background: rgba(10, 10, 20, 0.75);
     border: 3px solid var(--love-red);
     border-radius: 20px;
     padding: 40px;
     max-width: 700px;
     margin: 20px;
-    backdrop-filter: blur(15px);
-    box-shadow: 0 0 40px rgba(255, 0, 0, 0.3);
-    position: relative;
-    z-index: 2;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 40px rgba(255, 0, 0, 0.3), inset 0 0 30px rgba(255, 23, 68, 0.1);
 }
 
 .gameover-title {
