@@ -596,13 +596,14 @@ body {
 
 /* BATTLE LOG */
 .battle-log {
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 215, 0, 0.2);
-    border-radius: 10px;
-    padding: 15px;
-    max-height: 150px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 4px 8px;
+    max-height: 70px;
+    min-height: 40px;
     overflow-y: auto;
-    font-size: 13px;
+    font-size: 12px;
+    margin: 0 8px 8px 8px;
     color: #ccc;
 }
 
@@ -847,7 +848,9 @@ body {
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s;
-    margin: 10px;
+     min-height: 100dvh;
+     height: 100vh;
+     height: 100dvh;
 }
 
 .retry-btn:hover {
@@ -855,7 +858,11 @@ body {
     box-shadow: 0 0 20px rgba(255, 23, 68, 0.8);
 }
 
-/* ===== RESPONSIVE ===== */
+     align-items: stretch;
+     height: 100vh;
+     height: 100dvh;
+     min-height: 100vh;
+     min-height: 100dvh;
 
 /* Tablet (768px and below) */
 @media (max-width: 768px) {
@@ -869,7 +876,11 @@ body {
     }
 
     .battle-header p {
-        font-size: 14px;
+     padding: 0;
+     height: 100vh;
+     height: 100dvh;
+     min-height: 100vh;
+     min-height: 100dvh;
     }
 
     .boss-info {
@@ -879,14 +890,20 @@ body {
     .boss-icon {
         font-size: 70px;
     }
-
+     padding: 12px 8px 8px 8px;
+     border-bottom: 2px solid rgba(255, 23, 68, 0.3);
+     margin-bottom: 0;
     .heroes-section {
         grid-template-columns: 1fr;
         gap: 15px;
     }
 
     .vs-text {
-        display: none;
+     gap: 10px;
+     flex: 1 1 auto;
+     min-height: 0;
+     overflow: hidden;
+     padding: 0 8px;
     }
 
     .skills-grid {
@@ -895,7 +912,8 @@ body {
 
     .victory-container,
     .gameover-container {
-        padding: 20px;
+     max-height: 48px;
+     overflow-y: auto;
         margin: 10px;
         max-width: 90%;
     }
@@ -904,7 +922,7 @@ body {
         flex-direction: column;
         gap: 15px;
     }
-
+     margin: 0 0 8px 0;
     .big-attack-btn {
         width: 150px;
         height: 150px;
