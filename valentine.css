@@ -18,11 +18,6 @@
 
 body {
     background: linear-gradient(135deg, var(--darker) 0%, #1a0f2e 100%);
-    background-image: url('e3559c5492553b6b40ec05f3e7acb8d5.jpg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-blend-mode: overlay;
     color: var(--text);
     font-family: 'Arial', sans-serif;
     min-height: 100vh;
