@@ -136,17 +136,20 @@ function useSkill(skillType, character) {
             healAmount = 5;
             narration = '🛡️ The Protector gives a Comforting Embrace, hitting enemies and healing!';
             playAttackAnimation('protector');
+            playAttackSound();
         } else if (skillType === 'reassurance') {
             damage = 25;
             healAmount = 2;
             narration = '💬 Words of Reassurance! A strong attack on all enemies!';
             playAttackAnimation('protector');
+            playAttackSound();
         } else if (skillType === 'surprise') {
             damage = 10;
             healAmount = 3;
             battleState.protectorBuff = 'skip';
             narration = '🎁 Surprise Gift! All enemies lose their next turn!';
             playAttackAnimation('protector');
+            playAttackSound();
         }
     } else if (character === 'heroine') {
         if (skillType === 'smile') {
@@ -154,17 +157,20 @@ function useSkill(skillType, character) {
             healAmount = 3;
             narration = '✨ The Heroine\'s Beaming Smile charms all enemies!';
             playAttackAnimation('heroine');
+            playAttackSound();
         } else if (skillType === 'communication') {
             damage = 28;
             healAmount = 1;
             narration = '🗣️ Open Communication! A powerful blast hits all enemies!';
             playAttackAnimation('heroine');
+            playAttackSound();
         } else if (skillType === 'gesture') {
             damage = 8;
             healAmount = 5;
             battleState.heroineBuff = 'shield';
             narration = '💝 A Thoughtful Gesture! Reduces incoming damage next turn!';
             playAttackAnimation('heroine');
+            playAttackSound();
         }
     }
     
