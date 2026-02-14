@@ -1,3 +1,30 @@
+@media (max-width: 600px) {
+    .big-attack-panel {
+        flex-direction: row !important;
+        gap: 12px !important;
+        justify-content: center;
+        align-items: center;
+        margin: 10px 0 5px 0;
+    }
+    .big-attack-btn {
+        width: 80px !important;
+        height: 80px !important;
+        border-radius: 50% !important;
+        font-size: 15px !important;
+        padding: 0 !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .big-icon {
+        font-size: 32px !important;
+        margin-bottom: 2px !important;
+    }
+    .big-label {
+        font-size: 10px !important;
+    }
+}
 /* ===== BATTLE ARENA STYLES ===== */
 * {
     margin: 0;
@@ -102,11 +129,34 @@ body {
 
 /* Bigger, less-cluttered attack controls */
 .big-attack-panel {
-    display:flex;
+    display: flex;
+    flex-direction: row;
     gap: 30px;
     justify-content: center;
     align-items: center;
     margin: 20px 0 10px 0;
+}
+@media (max-width: 600px) {
+    .big-attack-panel {
+        flex-direction: row;
+        gap: 16px;
+        margin: 10px 0 5px 0;
+    }
+    .big-attack-btn {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        font-size: 15px;
+        padding: 0;
+    }
+    .big-icon {
+        font-size: 32px;
+        margin-bottom: 2px;
+    }
+    .big-label {
+        font-size: 10px;
+    }
+}
 }
 .big-attack-btn {
     width: 180px;
