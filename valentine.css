@@ -1,125 +1,3 @@
-@media (max-width: 380px) {
-    * {
-        font-size: 9px;
-    }
-    body {
-        padding: 0;
-        min-height: 100dvh;
-        height: 100dvh;
-    }
-    .screen {
-        padding: 0;
-    }
-    .splash-art-frame {
-        width: 60px;
-        height: 70px;
-        border-radius: 2px;
-    }
-    .game-title {
-        font-size: 7px;
-    }
-    .valentine-text {
-        font-size: 6px;
-    }
-    .loading-bar {
-        height: 2px;
-        border-radius: 1px;
-    }
-    .loading-text {
-        font-size: 6px;
-    }
-    .enter-button {
-        padding: 2px 4px !important;
-        font-size: 6px !important;
-        margin-top: 1px !important;
-        width: 99%;
-    }
-    .profile-avatar {
-        width: 14px;
-        height: 14px;
-        font-size: 7px;
-    }
-    .profile-name {
-        font-size: 7px;
-    }
-    .profile-role {
-        font-size: 6px;
-    }
-    .skill-item,
-    .stat-item {
-        padding: 2px;
-        font-size: 6px;
-    }
-    .skill-icon,
-    .stat-icon {
-        font-size: 7px;
-    }
-    .skill-name,
-    .stat-name {
-        font-size: 6px;
-    }
-    .skill-desc,
-    .stat-value {
-        font-size: 5px;
-    }
-    .modal-content {
-        width: 99%;
-        padding: 1px;
-        margin: 1px auto;
-        border-radius: 2px;
-    }
-    .modal-content h2 {
-        font-size: 6px;
-        margin-bottom: 1px;
-    }
-    .modal-content p {
-        font-size: 5px;
-        line-height: 1.05;
-    }
-    .claim-button {
-        padding: 2px 4px;
-        font-size: 6px;
-        margin-top: 1px;
-        width: 99%;
-    }
-    .btn-primary,
-    .btn-large,
-    .btn-secondary {
-        padding: 2px 4px;
-        font-size: 6px;
-        margin: 1px;
-        border-radius: 2px;
-    }
-    header {
-        padding: 1px;
-    }
-    header h1 {
-        font-size: 7px;
-    }
-    header p {
-        font-size: 6px;
-    }
-    .memory-card {
-        padding: 2px;
-        font-size: 7px;
-        border-radius: 2px;
-    }
-    .archery-container {
-        padding: 1px;
-    }
-    .target {
-        width: 18px;
-        height: 18px;
-        margin: 1px auto;
-    }
-    .archery-controls {
-        gap: 1px;
-    }
-    .control-btn {
-        padding: 1px 2px;
-        font-size: 6px;
-    }
-}
 /* ===== GENERAL STYLES ===== */
 * {
     margin: 0;
@@ -977,202 +855,201 @@ body {
 
 @media (max-width: 480px) {
     * {
-        font-size: 11px;
+        font-size: 13px;
     }
 
     body {
-        padding: 2px;
-        min-height: 100dvh;
-        height: 100dvh;
+        padding: 8px;
+        min-height: 100vh;
         overflow-x: hidden;
     }
 
     .screen {
-        padding: 2px;
+        padding: 10px;
     }
 
     .loading-container {
         flex-direction: column;
-        gap: 4px;
-        padding: 2px;
+        gap: 15px;
+        padding: 10px;
         align-items: center;
     }
 
     .splash-art-frame {
-        width: 80px;
-        height: 100px;
-        border-radius: 4px;
+        width: 220px;
+        height: 280px;
+        border-radius: 12px;
     }
 
     .game-title {
-        font-size: 10px;
-        line-height: 1.1;
+        font-size: 22px;
+        line-height: 1.3;
         text-align: center;
     }
 
     .valentine-text {
-        font-size: 8px;
+        font-size: 16px;
     }
 
     .loading-bar-container {
-        width: 98%;
-        margin-top: 2px;
+        width: 90%;
+        margin-top: 20px;
     }
 
     .loading-bar {
-        height: 4px;
-        border-radius: 2px;
+        height: 12px;
+        border-radius: 8px;
     }
 
     .loading-text {
-        font-size: 8px;
-        margin-top: 2px;
+        font-size: 12px;
+        margin-top: 8px;
     }
 
     .enter-button {
-        padding: 4px 8px !important;
-        font-size: 8px !important;
-        margin-top: 2px !important;
-        width: 98%;
+        padding: 12px 24px !important;
+        font-size: 13px !important;
+        margin-top: 20px !important;
+        width: 90%;
     }
 
     /* Profile page adjustments */
     .profile-card {
         grid-template-columns: 1fr;
-        padding: 2px;
-        margin: 2px auto;
-        max-width: 99%;
+        padding: 15px;
+        margin: 10px auto;
+        max-width: 95%;
     }
 
     .profile-header {
         flex-direction: column;
         align-items: center;
         text-align: center;
-        gap: 2px;
+        gap: 10px;
     }
 
     .profile-avatar {
-        width: 24px;
-        height: 24px;
-        font-size: 12px;
+        width: 80px;
+        height: 80px;
+        font-size: 40px;
     }
 
     .profile-name {
-        font-size: 10px;
+        font-size: 18px;
     }
 
     .profile-role {
-        font-size: 8px;
+        font-size: 12px;
     }
 
     .skill-item,
     .stat-item {
-        padding: 4px;
-        font-size: 8px;
+        padding: 12px;
+        font-size: 12px;
     }
 
     .skill-icon,
     .stat-icon {
-        font-size: 10px;
+        font-size: 28px;
     }
 
     .skill-name,
     .stat-name {
-        font-size: 8px;
+        font-size: 13px;
     }
 
     .skill-desc,
     .stat-value {
-        font-size: 7px;
+        font-size: 11px;
     }
 
     .skills-grid {
         grid-template-columns: 1fr;
-        gap: 2px;
+        gap: 10px;
     }
 
     .stats-grid {
         grid-template-columns: 1fr 1fr;
-        gap: 2px;
+        gap: 10px;
     }
 
     .modal-content {
-        width: 99%;
-        padding: 2px;
-        margin: 2px auto;
-        border-radius: 4px;
+        width: 95%;
+        padding: 15px;
+        margin: 10px auto;
+        border-radius: 12px;
     }
 
     .modal-content h2 {
-        font-size: 8px;
-        margin-bottom: 2px;
+        font-size: 16px;
+        margin-bottom: 10px;
     }
 
     .modal-content p {
-        font-size: 7px;
-        line-height: 1.1;
+        font-size: 12px;
+        line-height: 1.4;
     }
 
     .claim-button {
-        padding: 4px 8px;
-        font-size: 8px;
-        margin-top: 2px;
-        width: 98%;
+        padding: 10px 20px;
+        font-size: 12px;
+        margin-top: 12px;
+        width: 90%;
     }
 
     .btn-primary,
     .btn-large,
     .btn-secondary {
-        padding: 4px 8px;
-        font-size: 8px;
-        margin: 2px;
-        border-radius: 4px;
+        padding: 10px 20px;
+        font-size: 13px;
+        margin: 6px;
+        border-radius: 10px;
     }
 
     /* Header and navigation */
     header {
-        padding: 2px;
+        padding: 12px;
     }
 
     header h1 {
-        font-size: 10px;
+        font-size: 20px;
     }
 
     header p {
-        font-size: 8px;
+        font-size: 12px;
     }
 
     /* Memory match game adjustments */
     .memory-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 2px;
-        padding: 2px;
+        gap: 8px;
+        padding: 10px;
     }
 
     .memory-card {
-        padding: 4px;
-        font-size: 10px;
-        border-radius: 4px;
+        padding: 20px;
+        font-size: 32px;
+        border-radius: 8px;
     }
 
     /* Archery game adjustments */
     .archery-container {
-        padding: 2px;
+        padding: 10px;
     }
 
     .target {
-        width: 40px;
-        height: 40px;
-        margin: 2px auto;
+        width: 150px;
+        height: 150px;
+        margin: 10px auto;
     }
 
     .archery-controls {
-        gap: 2px;
+        gap: 10px;
     }
 
     .control-btn {
-        padding: 2px 4px;
-        font-size: 8px;
+        padding: 8px 16px;
+        font-size: 12px;
     }
 }
 

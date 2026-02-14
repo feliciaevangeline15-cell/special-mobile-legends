@@ -596,14 +596,13 @@ body {
 
 /* BATTLE LOG */
 .battle-log {
-    background: rgba(0, 0, 0, 0.15);
-    border-radius: 8px;
-    padding: 4px 8px;
-    max-height: 70px;
-    min-height: 40px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: 10px;
+    padding: 15px;
+    max-height: 150px;
     overflow-y: auto;
-    font-size: 12px;
-    margin: 0 8px 8px 8px;
+    font-size: 13px;
     color: #ccc;
 }
 
@@ -848,9 +847,7 @@ body {
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s;
-     min-height: 100dvh;
-     height: 100vh;
-     height: 100dvh;
+    margin: 10px;
 }
 
 .retry-btn:hover {
@@ -858,11 +855,7 @@ body {
     box-shadow: 0 0 20px rgba(255, 23, 68, 0.8);
 }
 
-     align-items: stretch;
-     height: 100vh;
-     height: 100dvh;
-     min-height: 100vh;
-     min-height: 100dvh;
+/* ===== RESPONSIVE ===== */
 
 /* Tablet (768px and below) */
 @media (max-width: 768px) {
@@ -876,11 +869,7 @@ body {
     }
 
     .battle-header p {
-     padding: 0;
-     height: 100vh;
-     height: 100dvh;
-     min-height: 100vh;
-     min-height: 100dvh;
+        font-size: 14px;
     }
 
     .boss-info {
@@ -890,20 +879,14 @@ body {
     .boss-icon {
         font-size: 70px;
     }
-     padding: 12px 8px 8px 8px;
-     border-bottom: 2px solid rgba(255, 23, 68, 0.3);
-     margin-bottom: 0;
+
     .heroes-section {
         grid-template-columns: 1fr;
         gap: 15px;
     }
 
     .vs-text {
-     gap: 10px;
-     flex: 1 1 auto;
-     min-height: 0;
-     overflow: hidden;
-     padding: 0 8px;
+        display: none;
     }
 
     .skills-grid {
@@ -912,8 +895,7 @@ body {
 
     .victory-container,
     .gameover-container {
-     max-height: 48px;
-     overflow-y: auto;
+        padding: 20px;
         margin: 10px;
         max-width: 90%;
     }
@@ -922,7 +904,7 @@ body {
         flex-direction: column;
         gap: 15px;
     }
-     margin: 0 0 8px 0;
+
     .big-attack-btn {
         width: 150px;
         height: 150px;
@@ -950,81 +932,73 @@ body {
 /* Mobile phones (480px and below) */
 @media (max-width: 480px) {
     * {
-        font-size: 11px;
+        font-size: 13px;
     }
 
     body {
-        min-height: 100dvh;
-        height: 100dvh;
+        min-height: 100vh;
         overflow-x: hidden;
-        overflow-y: hidden;
     }
 
     .battle-container {
-        padding: 0;
-        max-width: 100vw;
-        height: 100dvh;
-        min-height: 100dvh;
-        gap: 0;
-        border-radius: 0;
+        padding: 8px;
+        max-width: 100%;
+        gap: 10px;
+        border-radius: 10px;
     }
 
     .screen.active {
         padding: 0;
-        height: 100dvh;
-        min-height: 100dvh;
     }
 
     .battle-header {
-        padding: 6px 2px 2px 2px;
-        margin-bottom: 0;
-        border-bottom: 1px solid rgba(255, 23, 68, 0.2);
+        padding: 12px;
+        margin-bottom: 5px;
+        border-bottom: 2px solid rgba(255, 23, 68, 0.3);
     }
 
     .battle-header h1 {
-        font-size: 13px;
-        margin-bottom: 2px;
+        font-size: 18px;
+        margin-bottom: 5px;
     }
 
     .battle-header p {
-        font-size: 10px;
+        font-size: 12px;
     }
 
     .round-counter {
-        padding: 3px 6px;
-        font-size: 10px;
+        padding: 6px 12px;
+        font-size: 12px;
     }
 
+    /* Battle area adjustments */
     .battle-area {
-        gap: 4px;
+        gap: 10px;
         flex-direction: column;
-        flex: 1 1 auto;
-        min-height: 0;
-        overflow: hidden;
-        padding: 0 2px;
     }
 
     .relationship-section {
-        padding: 6px;
+        padding: 15px;
         margin: 0;
     }
 
     .health-bar-title {
-        font-size: 10px;
-        margin-bottom: 3px;
+        font-size: 14px;
+        margin-bottom: 8px;
     }
 
     .health-bar {
-        height: 12px;
+        height: 25px;
     }
 
     .health-text {
-        font-size: 9px;
-        margin-top: 2px;
+        font-size: 12px;
+        margin-top: 5px;
     }
 
+    /* Battle arena display */
     .battle-arena-display {
-        gap: 4px;
+        gap: 10px;
         flex-wrap: wrap;
         justify-content: center;
     }
@@ -1032,137 +1006,137 @@ body {
     .heroes-battle-section,
     .boss-battle-section {
         flex: 1 1 45%;
-        min-width: 80px;
-        padding: 2px;
+        min-width: 150px;
+        padding: 5px;
     }
 
     .hero-battle-icon {
-        font-size: 32px;
+        font-size: 70px;
     }
 
     .hero-battle-name {
-        font-size: 10px;
+        font-size: 14px;
     }
 
     .vs-divider {
-        font-size: 10px;
-        margin: 2px 0;
+        font-size: 18px;
+        margin: 5px 0;
     }
 
     .boss-battle-name {
-        font-size: 10px;
+        font-size: 16px;
     }
 
     .boss-battle-desc {
-        font-size: 8px;
+        font-size: 11px;
     }
 
     .narration-box {
-        font-size: 8px;
-        padding: 2px;
-        margin: 2px 0;
-        max-height: 24px;
+        font-size: 11px;
+        padding: 6px;
+        margin: 5px 0;
     }
 
     #narration-text {
-        line-height: 1.2;
+        line-height: 1.4;
     }
 
+    /* Attack buttons */
     .big-attack-panel {
         flex-direction: column;
-        gap: 4px;
-        margin: 2px 0 2px 0;
+        gap: 10px;
+        margin: 10px 0 5px 0;
     }
 
     .big-attack-btn {
-        width: 60px;
-        height: 60px;
-        border-radius: 6px;
-        font-size: 10px;
+        width: 120px;
+        height: 120px;
+        border-radius: 12px;
     }
 
     .big-icon {
-        font-size: 18px;
-        margin-bottom: 2px;
-    }
-
-    .big-label {
-        font-size: 8px;
-    }
-
-    .battle-log {
-        font-size: 8px;
-        max-height: 30px;
-        min-height: 16px;
-        overflow-y: auto;
-        padding: 2px 4px;
-        margin: 0 2px 2px 2px;
-    }
-
-    .log-entry {
-        font-size: 8px;
-        margin: 1px 0;
-    }
-
-    .victory-container,
-    .gameover-container {
-        padding: 4px;
-        margin: 2px auto;
-        max-width: 99vw;
-        border-radius: 6px;
-    }
-
-    .victory-title {
-        font-size: 10px;
-        margin-bottom: 2px;
-    }
-
-    .victory-message h2 {
-        font-size: 9px;
-        margin-bottom: 2px;
-    }
-
-    .victory-message p {
-        font-size: 8px;
-        line-height: 1.2;
-    }
-
-    .gameover-title {
-        font-size: 12px;
-        margin-bottom: 2px;
-    }
-
-    .gameover-message {
-        font-size: 8px;
-        line-height: 1.2;
+        font-size: 32px;
         margin-bottom: 4px;
     }
 
-    .retry-btn {
-        padding: 4px 8px;
-        font-size: 8px;
-        margin: 2px 2px;
-        border-radius: 6px;
+    .big-label {
+        font-size: 11px;
     }
 
+    /* Battle log */
+    .battle-log {
+        font-size: 11px;
+        max-height: 100px;
+        overflow-y: auto;
+        padding: 8px;
+    }
+
+    .log-entry {
+        font-size: 10px;
+        margin: 2px 0;
+    }
+
+    /* Victory/Gameover containers */
+    .victory-container,
+    .gameover-container {
+        padding: 16px;
+        margin: 10px auto;
+        max-width: 95%;
+        border-radius: 15px;
+    }
+
+    .victory-title {
+        font-size: 22px;
+        margin-bottom: 10px;
+    }
+
+    .victory-message h2 {
+        font-size: 16px;
+        margin-bottom: 8px;
+    }
+
+    .victory-message p {
+        font-size: 13px;
+        line-height: 1.4;
+    }
+
+    .gameover-title {
+        font-size: 28px;
+        margin-bottom: 12px;
+    }
+
+    .gameover-message {
+        font-size: 14px;
+        line-height: 1.4;
+        margin-bottom: 20px;
+    }
+
+    .retry-btn {
+        padding: 10px 20px;
+        font-size: 13px;
+        margin: 6px 4px;
+        border-radius: 12px;
+    }
+
+    /* Reward display */
     .rewards-display {
         flex-direction: column;
-        gap: 2px;
-        margin-top: 2px !important;
+        gap: 10px;
+        margin-top: 12px !important;
     }
 
     .reward-item {
         flex: 1 1 100%;
-        padding: 4px;
+        padding: 12px;
     }
 
     .reward-icon {
-        font-size: 12px;
-        margin-bottom: 2px;
+        font-size: 32px;
+        margin-bottom: 6px;
     }
 
     .reward-title {
-        font-size: 8px;
+        font-size: 12px;
     }
 }
 
