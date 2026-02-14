@@ -113,7 +113,27 @@ function playSuccessSound() {
 
 // Add click sound to all buttons automatically
 document.addEventListener('click', function(event) {
-    if (event.target.tagName === 'BUTTON' || event.target.classList.contains('btn')) {
+    const target = event.target;
+    // Trigger click sound for ANY button element or common button classes
+    if (target.tagName === 'BUTTON' || 
+        target.classList.contains('btn') || 
+        target.classList.contains('back-btn') || 
+        target.classList.contains('navigate-btn') || 
+        target.classList.contains('enter-button') || 
+        target.classList.contains('pull-button') ||
+        target.classList.contains('victory-btn') ||
+        target.classList.contains('skill-btn') ||
+        target.classList.contains('modal-close') ||
+        target.classList.contains('big-attack-btn') ||
+        target.classList.contains('retry-btn') ||
+        target.classList.contains('btn-shoot') ||
+        target.id === 'pull-btn' ||
+        target.id === 'read-letter' ||
+        target.id === 'next-challenge' ||
+        target.id === 'extra-game' ||
+        target.id === 'return-home' ||
+        target.id === 'archery-shoot' ||
+        target.id === 'archery-restart') {
         playClickSound();
     }
 }, true);

@@ -179,7 +179,6 @@ function setupLoadingScreen() {
     }, 4000);
     
     enterBtn.addEventListener('click', () => {
-        playWelcomeSound();
         goToProfile();
     });
 }
@@ -278,62 +277,6 @@ function updateRewardsHistory() {
 }
 
 // ===== AUDIO =====
-function playWelcomeSound() {
-    try {
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        
-        // Simulate ML announcer sound (heroic tone)
-        const osc = audioContext.createOscillator();
-        const gain = audioContext.createGain();
-        
-        osc.connect(gain);
-        gain.connect(audioContext.destination);
-        
-        // Start with a deep heroic tone
-        const now = audioContext.currentTime;
-        
-        osc.frequency.setValueAtTime(150, now);
-        osc.frequency.linearRampToValueAtTime(200, now + 0.3);
-        osc.frequency.linearRampToValueAtTime(150, now + 0.6);
-        
-        gain.gain.setValueAtTime(0, now);
-        gain.gain.linearRampToValueAtTime(0.3, now + 0.1);
-        gain.gain.linearRampToValueAtTime(0, now + 0.6);
-        
-        osc.start(now);
-        osc.stop(now + 0.6);
-        
-    } catch (e) {
-        console.log('Audio context not supported');
-    }
-}
-
-function playChestSound() {
-    try {
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = audioContext.createOscillator();
-        const gain = audioContext.createGain();
-        
-        osc.connect(gain);
-        gain.connect(audioContext.destination);
-        
-        const now = audioContext.currentTime;
-        
-        // Treasure sound
-        osc.frequency.setValueAtTime(600, now);
-        osc.frequency.linearRampToValueAtTime(800, now + 0.2);
-        osc.frequency.linearRampToValueAtTime(1000, now + 0.4);
-        
-        gain.gain.setValueAtTime(0.3, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
-        
-        osc.start(now);
-        osc.stop(now + 0.4);
-    } catch (e) {
-        console.log('Audio context not supported');
-    }
-}
-
 // ===== UTILITY FUNCTIONS =====
 function showAlert(message) {
     alert(message);
