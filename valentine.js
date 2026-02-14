@@ -82,7 +82,7 @@ const skillsContent = {
             <p style="color: var(--accent); font-style: italic;">
                 "Every love story has a beginning. Ours started with a look that said a thousand words." 💫
             </p>
-            <img src="https://via.placeholder.com/500x300?text=OUR+FIRST+MEETING" alt="First Meeting" style="width: 100%; border-radius: 10px; margin-top: 20px;">
+            <img src="WhatsApp Image 2026-02-14 at 23.57.52.jpeg" alt="First Meeting" style="width: 100%; border-radius: 10px; margin-top: 20px;">
         `
     },
     2: {
